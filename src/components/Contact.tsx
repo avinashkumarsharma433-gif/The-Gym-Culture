@@ -1,0 +1,179 @@
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import { 
+  MapPin, 
+  Phone, 
+  Mail, 
+  ArrowRight, 
+  Check, 
+  ChevronDown
+} from 'lucide-react';
+import { locationsData } from '../data/locations';
+
+const Contact = () => {
+  const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setTimeout(() => setIsSubmitted(false), 5000);
+    setFormState({ name: '', email: '', subject: '', message: '', location: '' });
+  };
+
+  return (
+    <section id="contact" className="py-24 bg-ink text-paper">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-20 items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-6 block font-bold">Get in touch</span>
+            <h2 className="font-display text-7xl md:text-9xl uppercase tracking-tight mb-8 leading-none">Contact <br /> Us</h2>
+            
+            <div className="space-y-8 mb-12">
+              <div className="flex gap-8 items-start group">
+                <div className="w-16 h-16 glass rounded-2xl flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all duration-500">
+                  <MapPin className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="font-display text-2xl uppercase mb-2 tracking-wide">Main HQ</h4>
+                  <p className="text-paper/40 font-light text-lg leading-relaxed">
+                    Sector 8, Kandivali,<br /> Mumbai, Maharashtra 400067
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-8 items-start group">
+                <div className="w-16 h-16 glass rounded-2xl flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all duration-500">
+                  <Phone className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="font-display text-2xl uppercase mb-2 tracking-wide">Call Us</h4>
+                  <p className="text-paper/40 font-light text-lg">+91 98765 43210</p>
+                  <p className="text-paper/40 font-light text-lg">+91 98765 43211</p>
+                </div>
+              </div>
+
+              <div className="flex gap-8 items-start group">
+                <div className="w-16 h-16 glass rounded-2xl flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all duration-500">
+                  <Mail className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="font-display text-2xl uppercase mb-2 tracking-wide">Email Us</h4>
+                  <p className="text-paper/40 font-light text-lg">info@thegymculture.in</p>
+                  <p className="text-paper/40 font-light text-lg">support@thegymculture.in</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass h-[400px] rounded-[3rem] overflow-hidden relative border-brand/20">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.96253456789!2d72.8345678!3d19.2045678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6d65656565b%3A0x5656565656565656!2sKandivali%20West%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                className="grayscale opacity-50"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass p-8 md:p-16 rounded-[3rem] shadow-2xl relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand/5 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+            
+            <h3 className="font-display text-4xl uppercase mb-6 tracking-wide">Inquiry Form</h3>
+            <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+              <div className="space-y-1">
+                <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Full Name</label>
+                <input 
+                  required
+                  type="text" 
+                  value={formState.name}
+                  onChange={(e) => setFormState({...formState, name: e.target.value})}
+                  placeholder="John Doe"
+                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Email Address</label>
+                <input 
+                  required
+                  type="email" 
+                  value={formState.email}
+                  onChange={(e) => setFormState({...formState, email: e.target.value})}
+                  placeholder="john@example.com"
+                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Subject</label>
+                <input 
+                  required
+                  type="text" 
+                  value={formState.subject}
+                  onChange={(e) => setFormState({...formState, subject: e.target.value})}
+                  placeholder="Membership Inquiry"
+                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Preferred Location</label>
+                <div className="relative">
+                  <select 
+                    required
+                    value={formState.location}
+                    onChange={(e) => setFormState({...formState, location: e.target.value})}
+                    className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base appearance-none cursor-pointer"
+                  >
+                    <option value="" disabled className="bg-ink">Select a Location</option>
+                    {locationsData.map((loc) => (
+                      <option key={loc.id} value={loc.name} className="bg-ink">
+                        {loc.name}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-paper/40 pointer-events-none" />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Message</label>
+                <textarea 
+                  required
+                  rows={3}
+                  value={formState.message}
+                  onChange={(e) => setFormState({...formState, message: e.target.value})}
+                  placeholder="Tell us how we can help..."
+                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all resize-none text-base leading-relaxed"
+                ></textarea>
+              </div>
+              
+              <button 
+                type="submit"
+                disabled={isSubmitted}
+                className={`w-full py-4 rounded-2xl font-display text-2xl uppercase tracking-widest transition-all flex items-center justify-center gap-4 ${isSubmitted ? 'bg-emerald-500 text-white' : 'bg-brand text-white hover:scale-[1.02] shadow-2xl shadow-brand/20'}`}
+              >
+                {isSubmitted ? (
+                  <>Message Sent <Check className="w-7 h-7" /></>
+                ) : (
+                  <>Send Message <ArrowRight className="w-7 h-7" /></>
+                )}
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Contact;
