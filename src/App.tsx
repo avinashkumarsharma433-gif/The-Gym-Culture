@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'motion/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
-import ChatBot from './components/ChatBot';
 import Home from './pages/Home';
 import About from './pages/About';
 import Locations from './pages/Locations';
@@ -66,7 +65,6 @@ function App() {
             </Routes>
           </AnimatePresence>
         </main>
-        <ChatBot />
         <WhatsAppButton />
         <Footer />
       </div>
