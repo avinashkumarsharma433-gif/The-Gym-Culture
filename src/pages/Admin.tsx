@@ -171,29 +171,28 @@ const Admin = () => {
             <span className="font-mono text-brand text-xs tracking-[0.5em] uppercase mb-2 block font-bold">Admin Dashboard</span>
             <h1 className="font-display text-5xl uppercase tracking-tight">Data Control Center</h1>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4">
+            <div className="relative flex-grow md:flex-grow-0">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-paper/30" />
               <input 
                 type="text"
                 placeholder="Search records..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-brand transition-all w-64"
+                className="bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-brand transition-all w-full md:w-64"
               />
             </div>
             <button 
               onClick={fetchData}
-              className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-brand"
+              className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-brand shrink-0"
             >
               <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button 
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all font-mono text-xs uppercase tracking-widest font-bold"
+              className="flex items-center gap-2 px-4 md:px-6 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl font-mono text-sm uppercase tracking-wider transition-all shrink-0"
             >
-              <LogOut className="w-4 h-4" />
-              Logout
+              <LogOut className="w-4 h-4" /> <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
@@ -367,7 +366,7 @@ const Admin = () => {
             <h2 className="font-display text-3xl uppercase mb-6">Submission Details</h2>
             
             <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4">
                 <div>
                   <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Name</p>
                   <p className="font-medium text-lg">{viewingInquiry.name}</p>
@@ -378,7 +377,7 @@ const Admin = () => {
                 </div>
                 <div>
                   <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Email</p>
-                  <a href={`mailto:${viewingInquiry.email}`} className="font-medium text-lg text-brand hover:underline">{viewingInquiry.email}</a>
+                  <a href={`mailto:${viewingInquiry.email}`} className="font-medium text-lg text-brand hover:underline break-all">{viewingInquiry.email}</a>
                 </div>
                 <div>
                   <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Phone</p>
@@ -397,11 +396,16 @@ const Admin = () => {
                 {viewingInquiry.investment && (
                   <div>
                     <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Investment Range</p>
-                    <p className="font-medium text-lg text-emerald-400">{viewingInquiry.investment}</p>
+                    <p className="font-medium text-lg text-emerald-400">
+                      {viewingInquiry.investment === '20-50' ? '₹20L - ₹50L' : 
+                       viewingInquiry.investment === '50-100' ? '₹50L - ₹1Cr' : 
+                       viewingInquiry.investment === '100+' ? '₹1Cr+' : 
+                       viewingInquiry.investment}
+                    </p>
                   </div>
                 )}
                 {viewingInquiry.subject && (
-                  <div className="col-span-2">
+                  <div className="col-span-1 md:col-span-2">
                     <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Subject</p>
                     <p className="font-medium text-lg">{viewingInquiry.subject}</p>
                   </div>
