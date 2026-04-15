@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { Database, MessageSquare, Users, Clock, RefreshCw, ChevronRight, Search, LogOut, Trash2, Download, CheckSquare } from 'lucide-react';
+import { Database, MessageSquare, Users, Clock, RefreshCw, ChevronRight, Search, LogOut, Trash2, Download, CheckSquare, X } from 'lucide-react';
 import { collection, getDocs, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { db, auth } from '../lib/firebase';
@@ -28,6 +28,7 @@ const Admin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [lastSelectedId, setLastSelectedId] = useState<string | null>(null);
+  const [viewingInquiry, setViewingInquiry] = useState<Inquiry | null>(null);
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -293,7 +294,7 @@ const Admin = () => {
                     <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Type</th>
                     <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Name</th>
                     <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Contact Info</th>
-                    <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Details</th>
+                    <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm font-light">
@@ -330,16 +331,13 @@ const Admin = () => {
                             {inquiry.phone && <span className="text-paper/40">{inquiry.phone}</span>}
                           </div>
                         </td>
-                        <td className="py-6 pr-4 max-w-md">
-                          <div className="flex flex-col gap-2">
-                            <div className="flex flex-wrap gap-2">
-                              {inquiry.city && <span className="text-brand text-xs uppercase tracking-wider">Location: {inquiry.city}</span>}
-                              {inquiry.location && <span className="text-brand text-xs uppercase tracking-wider">Location: {inquiry.location}</span>}
-                              {inquiry.investment && <span className="text-emerald-400 text-xs uppercase tracking-wider">Investment: {inquiry.investment}</span>}
-                            </div>
-                            {inquiry.subject && <span className="font-medium text-paper/80">Subject: {inquiry.subject}</span>}
-                            <span className="text-paper/60">Message: {inquiry.message}</span>
-                          </div>
+                        <td className="py-6 text-right">
+                          <button 
+                            onClick={() => setViewingInquiry(inquiry)}
+                            className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-mono uppercase tracking-wider transition-all text-brand"
+                          >
+                            View Details
+                          </button>
                         </td>
                       </tr>
                     ))
@@ -350,6 +348,76 @@ const Admin = () => {
           )}
         </div>
       </div>
+
+      {/* Submission Details Modal */}
+      {viewingInquiry && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="glass p-8 rounded-[2rem] w-full max-w-2xl relative border-brand/20 max-h-[90vh] overflow-y-auto custom-scrollbar"
+          >
+            <button 
+              onClick={() => setViewingInquiry(null)}
+              className="absolute top-6 right-6 text-paper/40 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            <h2 className="font-display text-3xl uppercase mb-6">Submission Details</h2>
+            
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Name</p>
+                  <p className="font-medium text-lg">{viewingInquiry.name}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Date</p>
+                  <p className="font-medium text-lg">{new Date(viewingInquiry.created_at).toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Email</p>
+                  <a href={`mailto:${viewingInquiry.email}`} className="font-medium text-lg text-brand hover:underline">{viewingInquiry.email}</a>
+                </div>
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Phone</p>
+                  {viewingInquiry.phone ? (
+                    <a href={`tel:${viewingInquiry.phone}`} className="font-medium text-lg text-brand hover:underline">{viewingInquiry.phone}</a>
+                  ) : (
+                    <p className="font-medium text-lg text-paper/40">N/A</p>
+                  )}
+                </div>
+                {viewingInquiry.city && (
+                  <div>
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">City/Location</p>
+                    <p className="font-medium text-lg">{viewingInquiry.city || viewingInquiry.location}</p>
+                  </div>
+                )}
+                {viewingInquiry.investment && (
+                  <div>
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Investment Range</p>
+                    <p className="font-medium text-lg text-emerald-400">{viewingInquiry.investment}</p>
+                  </div>
+                )}
+                {viewingInquiry.subject && (
+                  <div className="col-span-2">
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-1">Subject</p>
+                    <p className="font-medium text-lg">{viewingInquiry.subject}</p>
+                  </div>
+                )}
+              </div>
+              
+              <div className="pt-4 border-t border-white/10">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-2">Message</p>
+                <div className="bg-black/20 p-4 rounded-xl text-paper/80 whitespace-pre-wrap">
+                  {viewingInquiry.message}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

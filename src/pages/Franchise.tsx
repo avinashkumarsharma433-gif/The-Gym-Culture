@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Target, Users, Trophy, Activity, Zap, Shield, Award, Check, ArrowRight, ChevronDown } from 'lucide-react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 const Franchise = () => {
   const [formState, setFormState] = useState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
@@ -65,17 +67,15 @@ const Franchise = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch('/api/franchise', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formState),
+      await addDoc(collection(db, 'inquiries'), {
+        ...formState,
+        type: 'franchise',
+        created_at: new Date().toISOString()
       });
-      if (response.ok) {
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 5000);
-        setFormState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
-        setErrors({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
-      }
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 5000);
+      setFormState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
+      setErrors({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
     } catch (error) {
       console.error("Form submission error:", error);
     }

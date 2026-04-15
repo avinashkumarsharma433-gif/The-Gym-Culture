@@ -98,12 +98,6 @@ const Navbar = () => {
                 )}
               </div>
             ))}
-            <Link 
-              to="/contact"
-              className="bg-brand text-white px-6 py-3 rounded-lg font-display text-lg uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-brand/20"
-            >
-              Join Now
-            </Link>
           </div>
 
           <button 
@@ -168,12 +162,6 @@ const Navbar = () => {
                   )}
                 </div>
               ))}
-              <Link 
-                to="/contact"
-                className="bg-brand text-white w-full py-6 rounded-2xl font-display text-2xl uppercase tracking-widest flex items-center justify-center gap-4 mt-4"
-              >
-                Join Now <ArrowRight className="w-6 h-6" />
-              </Link>
           </motion.div>
         )}
       </AnimatePresence>
