@@ -1,10 +1,12 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { MapPin, Phone, Clock, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { MapPin, Phone, Clock, ArrowRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { locationsData } from '../data/locations';
+import { locationsData, LocationData } from '../data/locations';
 
 const Locations = () => {
+  const [activeLocation, setActiveLocation] = useState<LocationData | null>(null);
+
   return (
     <div className="pt-24 pb-16">
       {/* Header */}
@@ -87,27 +89,86 @@ const Locations = () => {
         </div>
       </section>
 
-      {/* Map Section Placeholder */}
+      {/* Interactive Map Section */}
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="glass h-[600px] rounded-[4rem] overflow-hidden relative border-brand/20">
-            <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm z-10 flex items-center justify-center text-center p-10 pointer-events-none">
-              <div className="max-w-md">
-                <MapPin className="w-16 h-16 text-brand mx-auto mb-8 animate-bounce" />
-                <h2 className="font-display text-5xl uppercase mb-4">Interactive Map</h2>
-                <p className="text-paper/60 font-light">Explore all 15+ locations across the country and find the one nearest to you.</p>
-              </div>
-            </div>
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.96253456789!2d72.8345678!3d19.2045678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6d65656565b%3A0x5656565656565656!2sKandivali%20West%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen 
-              loading="lazy" 
-              className="grayscale opacity-50"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+            {/* Abstract Map Background */}
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20 grayscale mix-blend-overlay"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/50 to-ink/80"></div>
+            
+            {/* Map Markers */}
+            {locationsData.map((loc) => (
+              loc.coordinates && (
+                <button
+                  key={loc.id}
+                  onClick={() => setActiveLocation(loc)}
+                  className="absolute z-20 transform -translate-x-1/2 -translate-y-1/2 group"
+                  style={{ left: `${loc.coordinates.x}%`, top: `${loc.coordinates.y}%` }}
+                >
+                  <div className={`relative flex items-center justify-center w-12 h-12 transition-transform duration-300 ${activeLocation?.id === loc.id ? 'scale-125' : 'hover:scale-110'}`}>
+                    <div className={`absolute inset-0 rounded-full animate-ping opacity-20 ${activeLocation?.id === loc.id ? 'bg-brand' : 'bg-white'}`}></div>
+                    <MapPin className={`w-8 h-8 drop-shadow-lg ${activeLocation?.id === loc.id ? 'text-brand' : 'text-white group-hover:text-brand transition-colors'}`} />
+                  </div>
+                  <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1 glass-dark rounded-full text-xs font-mono font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                    {loc.name}
+                  </span>
+                </button>
+              )
+            ))}
+
+            {/* Active Location Popup */}
+            <AnimatePresence>
+              {activeLocation && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                  className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-30"
+                >
+                  <div className="glass-dark rounded-3xl p-6 border border-brand/30 shadow-2xl shadow-black/50 relative overflow-hidden">
+                    <button 
+                      onClick={() => setActiveLocation(null)}
+                      className="absolute top-4 right-4 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-colors z-10"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                    
+                    <div className="flex gap-6 items-center">
+                      <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0">
+                        <img src={activeLocation.image} alt={activeLocation.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <h3 className="font-display text-2xl uppercase tracking-wide mb-2">{activeLocation.name}</h3>
+                        <p className="text-paper/60 text-sm mb-4 line-clamp-2">{activeLocation.address}</p>
+                        <Link 
+                          to={`/locations/${activeLocation.id}`}
+                          className="inline-flex items-center gap-2 text-brand text-sm font-bold uppercase tracking-wider hover:text-white transition-colors"
+                        >
+                          View Details <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Initial Prompt (shows when no location is selected) */}
+            <AnimatePresence>
+              {!activeLocation && (
+                <motion.div 
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-10 flex items-center justify-center text-center p-10 pointer-events-none"
+                >
+                  <div className="max-w-md bg-ink/40 backdrop-blur-md p-8 rounded-3xl border border-white/5">
+                    <MapPin className="w-12 h-12 text-brand mx-auto mb-6 animate-bounce" />
+                    <h2 className="font-display text-3xl uppercase mb-3">Interactive Map</h2>
+                    <p className="text-paper/60 font-light text-sm">Click on any marker to explore our locations across the country.</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </section>

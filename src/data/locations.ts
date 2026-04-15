@@ -8,6 +8,7 @@ export interface LocationData {
   about: string;
   services: string[];
   amenities: string[];
+  coordinates?: { x: number; y: number };
 }
 
 export const locationsData: LocationData[] = [
@@ -18,6 +19,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43213",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1200",
+    coordinates: { x: 28, y: 52 },
     about: "Conveniently located near the station, our Borivali gym is perfect for commuters and locals alike. We offer a premium fitness experience with a focus on functional strength and endurance.",
     services: [
       "Functional Training",
@@ -42,6 +44,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43210",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200",
+    coordinates: { x: 29, y: 55 },
     about: "Our flagship location in Kandivali is a state-of-the-art facility designed to provide the ultimate fitness experience. Spanning over 10,000 sq. ft., this gym is equipped with the latest international equipment and a team of elite trainers dedicated to your success.",
     services: [
       "Personal Training",
@@ -68,6 +71,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43212",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=1200",
+    coordinates: { x: 27, y: 48 },
     about: "The Mira Road branch is known for its high-energy atmosphere and community-driven approach. Whether you're a beginner or a pro, our facility offers the perfect environment to push your limits.",
     services: [
       "Zumba Classes",
@@ -92,6 +96,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43214",
     hours: "6:00 AM - 12:00 AM",
     image: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1200",
+    coordinates: { x: 30, y: 58 },
     about: "Our Malad East facility is a hub for fitness enthusiasts. With a massive floor area and specialized zones for different training styles, it's the ultimate playground for your fitness journey.",
     services: [
       "Mixed Martial Arts",
@@ -116,6 +121,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43215",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200",
+    coordinates: { x: 29, y: 57 },
     about: "The Orlem branch offers a cozy yet powerful workout environment. Known for its personalized attention and friendly community, it's the perfect place to start your fitness transformation.",
     services: [
       "Personal Training",
@@ -140,6 +146,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43211",
     hours: "5:00 AM - 11:00 PM",
     image: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1200",
+    coordinates: { x: 60, y: 25 },
     about: "Located in the heart of Haridwar, our facility brings modern fitness to the holy city. We focus on holistic wellness, combining traditional strength training with modern functional movements in a serene environment.",
     services: [
       "Strength Training",
@@ -164,6 +171,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43220",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200",
+    coordinates: { x: 31, y: 56 },
     about: "Our Sundar Nagar branch is the newest addition to The Gym Culture family. This facility is designed with a modern aesthetic and features cutting-edge equipment to help you achieve your fitness goals in style.",
     services: [
       "Personal Training",

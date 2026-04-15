@@ -31,10 +31,12 @@ const Footer = () => {
         <div className="grid lg:grid-cols-4 gap-20 mb-32">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-3 mb-10 group">
-              <div className="w-12 h-12 bg-brand rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-[0_0_20px_#FF0000]">
-                <Dumbbell className="text-white w-7 h-7" />
-              </div>
-              <span className="font-display text-4xl uppercase tracking-tighter text-white">The Gym <span className="text-brand">Culture</span></span>
+              <img 
+                src="https://thegymculture.in/wp-content/uploads/2026/03/THE-GYM-CULTURE-LOGO-SVG.png" 
+                alt="The Gym Culture Logo" 
+                className="h-16 w-auto object-contain"
+                referrerPolicy="no-referrer"
+              />
             </Link>
             <p className="text-paper/40 text-xl font-light leading-relaxed mb-12 max-w-md">
               Redefining fitness through community, accessibility, and high-performance environments. Join the movement today.

@@ -40,13 +40,12 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className={`glass-dark rounded-2xl px-8 py-4 flex items-center justify-between border-white/5 transition-all duration-500 ${isScrolled ? 'shadow-2xl shadow-black/50' : ''}`}>
           <NavLink to="/" className="flex items-center gap-3 group">
-            <motion.div 
-              whileHover={{ rotate: 12, scale: 1.1 }}
-              className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center transition-transform shadow-[0_0_15px_#FF0000]"
-            >
-              <Dumbbell className="text-white w-6 h-6" />
-            </motion.div>
-            <span className="font-display text-2xl uppercase tracking-tighter text-white">The Gym <span className="text-brand">Culture</span></span>
+            <img 
+              src="https://thegymculture.in/wp-content/uploads/2026/03/THE-GYM-CULTURE-LOGO-SVG.png" 
+              alt="The Gym Culture Logo" 
+              className="h-12 w-auto object-contain"
+              referrerPolicy="no-referrer"
+            />
           </NavLink>
 
           <div className="hidden lg:flex items-center gap-10">
