@@ -12,6 +12,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-ink text-paper font-sans antialiased;
   }
@@ -19,7 +22,7 @@
 
 @layer utilities {
   .text-stroke {
-    -webkit-text-stroke: 1px currentColor;
+    -webkit-text-stroke: 1px white;
     color: transparent;
   }
   
