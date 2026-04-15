@@ -11,6 +11,7 @@ import {
 import { locationsData } from '../data/locations';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import CustomSelect from './CustomSelect';
 
 const Contact = () => {
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
@@ -202,24 +203,16 @@ const Contact = () => {
               </div>
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Preferred Location</label>
-                <div className="relative">
-                  <select 
-                    value={formState.location}
-                    onChange={(e) => {
-                      setFormState({...formState, location: e.target.value});
-                      if (errors.location) setErrors({...errors, location: ''});
-                    }}
-                    className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base appearance-none cursor-pointer text-paper bg-transparent ${errors.location ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
-                  >
-                    <option value="" disabled className="bg-ink text-paper">Select a Location</option>
-                    {locationsData.map((loc) => (
-                      <option key={loc.id} value={loc.name} className="bg-ink text-paper">
-                        {loc.name}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-paper/40 pointer-events-none" />
-                </div>
+                <CustomSelect 
+                  value={formState.location}
+                  onChange={(value) => {
+                    setFormState({...formState, location: value});
+                    if (errors.location) setErrors({...errors, location: ''});
+                  }}
+                  options={locationsData.map(loc => ({ value: loc.name, label: loc.name }))}
+                  placeholder="Select a Location"
+                  error={!!errors.location}
+                />
                 {errors.location && <p className="text-brand text-xs mt-1">{errors.location}</p>}
               </div>
               <div className="space-y-1">

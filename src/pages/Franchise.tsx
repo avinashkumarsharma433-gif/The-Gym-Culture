@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Target, Users, Trophy, Activity, Zap, Shield, Award, Check, ArrowRight, ChevronDown } from 'lucide-react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import CustomSelect from '../components/CustomSelect';
 
 const Franchise = () => {
   const [formState, setFormState] = useState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
@@ -351,22 +352,20 @@ const Franchise = () => {
                 </div>
                 <div className="space-y-1">
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Investment Range</label>
-                  <div className="relative">
-                    <select 
-                      value={formState.investment}
-                      onChange={(e) => {
-                        setFormState({...formState, investment: e.target.value});
-                        if (errors.investment) setErrors({...errors, investment: ''});
-                      }}
-                      className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base appearance-none cursor-pointer text-paper bg-transparent ${errors.investment ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
-                    >
-                      <option value="" disabled className="bg-ink text-paper">Select Range</option>
-                      <option value="20-50" className="bg-ink text-paper">₹20L - ₹50L</option>
-                      <option value="50-100" className="bg-ink text-paper">₹50L - ₹1Cr</option>
-                      <option value="100+" className="bg-ink text-paper">₹1Cr+</option>
-                    </select>
-                    <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-paper/40 pointer-events-none" />
-                  </div>
+                  <CustomSelect 
+                    value={formState.investment}
+                    onChange={(value) => {
+                      setFormState({...formState, investment: value});
+                      if (errors.investment) setErrors({...errors, investment: ''});
+                    }}
+                    options={[
+                      { value: '20-50', label: '₹20L - ₹50L' },
+                      { value: '50-100', label: '₹50L - ₹1Cr' },
+                      { value: '100+', label: '₹1Cr+' }
+                    ]}
+                    placeholder="Select Range"
+                    error={!!errors.investment}
+                  />
                   {errors.investment && <p className="text-brand text-xs mt-1">{errors.investment}</p>}
                 </div>
                 <div className="space-y-1">
