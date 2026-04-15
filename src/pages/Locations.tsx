@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
+// @ts-ignore
+import { GestureHandling } from 'leaflet-gesture-handling';
 import { locationsData, LocationData } from '../data/locations';
+
+// Attach gesture handling to Leaflet Map
+L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
 // Custom MapPin Icon using Lucide React's SVG path
 const customIcon = L.divIcon({
@@ -137,6 +143,7 @@ const Locations = () => {
               maxBounds={indiaBounds}
               maxBoundsViscosity={1.0}
               scrollWheelZoom={true}
+              gestureHandling={true}
               className="w-full h-full z-0"
               style={{ background: '#0a0a0a' }} // Match dark theme
             >

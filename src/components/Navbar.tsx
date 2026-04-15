@@ -121,11 +121,11 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full px-6 pt-4 lg:hidden"
+            transition={{ duration: 0.2 }}
+            className="absolute top-[calc(100%+1rem)] left-6 right-6 lg:hidden glass-dark rounded-3xl p-10 flex flex-col gap-6 border-white/10 shadow-2xl max-h-[80vh] overflow-y-auto"
           >
-            <div className="glass-dark rounded-3xl p-10 flex flex-col gap-6 border-white/10 shadow-2xl max-h-[80vh] overflow-y-auto">
-              {navLinks.map((link) => (
-                <div key={link.name} className="flex flex-col gap-4">
+            {navLinks.map((link) => (
+              <div key={link.name} className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <NavLink 
                       to={link.path}
@@ -174,7 +174,6 @@ const Navbar = () => {
               >
                 Join Now <ArrowRight className="w-6 h-6" />
               </Link>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
