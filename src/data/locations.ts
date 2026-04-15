@@ -19,7 +19,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43213",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1200",
-    coordinates: { lat: 19.2290, lng: 72.8573 },
+    coordinates: { lat: 19.2220606, lng: 72.8590031 },
     about: "Conveniently located near the station, our Borivali gym is perfect for commuters and locals alike. We offer a premium fitness experience with a focus on functional strength and endurance.",
     services: [
       "Functional Training",
@@ -44,7 +44,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43210",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200",
-    coordinates: { lat: 19.2045, lng: 72.8360 },
+    coordinates: { lat: 19.2034567, lng: 72.8727588 },
     about: "Our flagship location in Kandivali is a state-of-the-art facility designed to provide the ultimate fitness experience. Spanning over 10,000 sq. ft., this gym is equipped with the latest international equipment and a team of elite trainers dedicated to your success.",
     services: [
       "Personal Training",
@@ -71,7 +71,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43212",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=1200",
-    coordinates: { lat: 19.2841, lng: 72.8696 },
+    coordinates: { lat: 19.2818422, lng: 72.8818832 },
     about: "The Mira Road branch is known for its high-energy atmosphere and community-driven approach. Whether you're a beginner or a pro, our facility offers the perfect environment to push your limits.",
     services: [
       "Zumba Classes",
@@ -96,7 +96,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43214",
     hours: "6:00 AM - 12:00 AM",
     image: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1200",
-    coordinates: { lat: 19.1860, lng: 72.8485 },
+    coordinates: { lat: 19.1783562, lng: 72.8501905 },
     about: "Our Malad East facility is a hub for fitness enthusiasts. With a massive floor area and specialized zones for different training styles, it's the ultimate playground for your fitness journey.",
     services: [
       "Mixed Martial Arts",
@@ -121,7 +121,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43215",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200",
-    coordinates: { lat: 19.1900, lng: 72.8350 },
+    coordinates: { lat: 19.1955104, lng: 72.8373156 },
     about: "The Orlem branch offers a cozy yet powerful workout environment. Known for its personalized attention and friendly community, it's the perfect place to start your fitness transformation.",
     services: [
       "Personal Training",
@@ -146,7 +146,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43211",
     hours: "5:00 AM - 11:00 PM",
     image: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1200",
-    coordinates: { lat: 29.9457, lng: 78.1642 },
+    coordinates: { lat: 29.935142, lng: 78.0770637 },
     about: "Located in the heart of Haridwar, our facility brings modern fitness to the holy city. We focus on holistic wellness, combining traditional strength training with modern functional movements in a serene environment.",
     services: [
       "Strength Training",
@@ -171,7 +171,7 @@ export const locationsData: LocationData[] = [
     phone: "+91 98765 43220",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200",
-    coordinates: { lat: 19.1750, lng: 72.8400 },
+    coordinates: { lat: 19.1747503, lng: 72.8447587 },
     about: "Our Sundar Nagar branch is the newest addition to The Gym Culture family. This facility is designed with a modern aesthetic and features cutting-edge equipment to help you achieve your fitness goals in style.",
     services: [
       "Personal Training",
