@@ -209,11 +209,11 @@ const Contact = () => {
                       setFormState({...formState, location: e.target.value});
                       if (errors.location) setErrors({...errors, location: ''});
                     }}
-                    className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base appearance-none cursor-pointer ${errors.location ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
+                    className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base appearance-none cursor-pointer text-paper bg-transparent ${errors.location ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                   >
-                    <option value="" disabled className="bg-ink">Select a Location</option>
+                    <option value="" disabled className="bg-ink text-paper">Select a Location</option>
                     {locationsData.map((loc) => (
-                      <option key={loc.id} value={loc.name} className="bg-ink">
+                      <option key={loc.id} value={loc.name} className="bg-ink text-paper">
                         {loc.name}
                       </option>
                     ))}
