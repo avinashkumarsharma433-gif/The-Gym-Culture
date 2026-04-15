@@ -1,11 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Phone, Clock, ArrowRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { locationsData, LocationData } from '../data/locations';
+
+// Custom MapPin Icon using Lucide React's SVG path
+const customIcon = L.divIcon({
+  className: 'custom-leaflet-icon',
+  html: `<div class="relative flex items-center justify-center w-10 h-10 transition-transform duration-300 hover:scale-110">
+          <div class="absolute inset-0 rounded-full animate-ping opacity-20 bg-brand"></div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-lg"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+         </div>`,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -40],
+});
+
+// Component to handle map interactions and bounds
+const MapController = ({ activeLocation }: { activeLocation: LocationData | null }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (activeLocation && activeLocation.coordinates) {
+      map.flyTo([activeLocation.coordinates.lat, activeLocation.coordinates.lng], 14, {
+        duration: 1.5
+      });
+    }
+  }, [activeLocation, map]);
+
+  return null;
+};
 
 const Locations = () => {
   const [activeLocation, setActiveLocation] = useState<LocationData | null>(null);
+
+  // India bounds
+  const indiaBounds = L.latLngBounds(
+    L.latLng(6.5, 68.1), // South-West
+    L.latLng(35.5, 97.3) // North-East
+  );
 
   return (
     <div className="pt-24 pb-16">
@@ -92,41 +128,51 @@ const Locations = () => {
       {/* Interactive Map Section */}
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="glass h-[600px] rounded-[4rem] overflow-hidden relative border-brand/20">
-            {/* Abstract Map Background */}
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20 grayscale mix-blend-overlay"></div>
-            <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/50 to-ink/80"></div>
-            
-            {/* Map Markers */}
-            {locationsData.map((loc) => (
-              loc.coordinates && (
-                <button
-                  key={loc.id}
-                  onClick={() => setActiveLocation(loc)}
-                  className="absolute z-20 transform -translate-x-1/2 -translate-y-1/2 group"
-                  style={{ left: `${loc.coordinates.x}%`, top: `${loc.coordinates.y}%` }}
-                >
-                  <div className={`relative flex items-center justify-center w-12 h-12 transition-transform duration-300 ${activeLocation?.id === loc.id ? 'scale-125' : 'hover:scale-110'}`}>
-                    <div className={`absolute inset-0 rounded-full animate-ping opacity-20 ${activeLocation?.id === loc.id ? 'bg-brand' : 'bg-white'}`}></div>
-                    <MapPin className={`w-8 h-8 drop-shadow-lg ${activeLocation?.id === loc.id ? 'text-brand' : 'text-white group-hover:text-brand transition-colors'}`} />
-                  </div>
-                  <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1 glass-dark rounded-full text-xs font-mono font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                    {loc.name}
-                  </span>
-                </button>
-              )
-            ))}
+          <div className="glass h-[600px] rounded-[4rem] overflow-hidden relative border-brand/20 z-0">
+            <MapContainer 
+              center={[20.5937, 78.9629]} // Center of India
+              zoom={5} 
+              minZoom={5}
+              maxZoom={14}
+              maxBounds={indiaBounds}
+              maxBoundsViscosity={1.0}
+              scrollWheelZoom={true}
+              className="w-full h-full z-0"
+              style={{ background: '#0a0a0a' }} // Match dark theme
+            >
+              {/* CartoDB Dark Matter Base Map - Only outlines, roads, and major labels */}
+              <TileLayer
+                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              />
+              
+              <MapController activeLocation={activeLocation} />
 
-            {/* Active Location Popup */}
+              {locationsData.map((loc) => (
+                loc.coordinates && (
+                  <Marker 
+                    key={loc.id}
+                    position={[loc.coordinates.lat, loc.coordinates.lng]}
+                    icon={customIcon}
+                    eventHandlers={{
+                      click: () => setActiveLocation(loc),
+                    }}
+                  >
+                  </Marker>
+                )
+              ))}
+            </MapContainer>
+
+            {/* Active Location Popup Overlay */}
             <AnimatePresence>
               {activeLocation && (
                 <motion.div
                   initial={{ opacity: 0, y: 20, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                  className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-30"
+                  className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-[1000] pointer-events-auto"
                 >
-                  <div className="glass-dark rounded-3xl p-6 border border-brand/30 shadow-2xl shadow-black/50 relative overflow-hidden">
+                  <div className="glass-dark rounded-3xl p-6 border border-brand/30 shadow-2xl shadow-black/50 relative overflow-hidden bg-ink/90 backdrop-blur-xl">
                     <button 
                       onClick={() => setActiveLocation(null)}
                       className="absolute top-4 right-4 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-colors z-10"
@@ -139,7 +185,7 @@ const Locations = () => {
                         <img src={activeLocation.image} alt={activeLocation.name} className="w-full h-full object-cover" />
                       </div>
                       <div>
-                        <h3 className="font-display text-2xl uppercase tracking-wide mb-2">{activeLocation.name}</h3>
+                        <h3 className="font-display text-2xl uppercase tracking-wide mb-2 text-white">{activeLocation.name}</h3>
                         <p className="text-paper/60 text-sm mb-4 line-clamp-2">{activeLocation.address}</p>
                         <Link 
                           to={`/locations/${activeLocation.id}`}
@@ -159,12 +205,13 @@ const Locations = () => {
               {!activeLocation && (
                 <motion.div 
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-10 flex items-center justify-center text-center p-10 pointer-events-none"
+                  className="absolute top-10 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none"
                 >
-                  <div className="max-w-md bg-ink/40 backdrop-blur-md p-8 rounded-3xl border border-white/5">
-                    <MapPin className="w-12 h-12 text-brand mx-auto mb-6 animate-bounce" />
-                    <h2 className="font-display text-3xl uppercase mb-3">Interactive Map</h2>
-                    <p className="text-paper/60 font-light text-sm">Click on any marker to explore our locations across the country.</p>
+                  <div className="bg-ink/80 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-2xl">
+                    <p className="text-white/80 font-light text-sm flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-brand" />
+                      Click on any marker to explore our locations
+                    </p>
                   </div>
                 </motion.div>
               )}

@@ -43,7 +43,7 @@ const Navbar = () => {
             <img 
               src="https://thegymculture.in/wp-content/uploads/2026/03/THE-GYM-CULTURE-LOGO-SVG.png" 
               alt="The Gym Culture Logo" 
-              className="h-12 w-auto object-contain"
+              className="h-7 md:h-12 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
           </NavLink>

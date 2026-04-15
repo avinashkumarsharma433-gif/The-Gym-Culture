@@ -34,7 +34,7 @@ const Footer = () => {
               <img 
                 src="https://thegymculture.in/wp-content/uploads/2026/03/THE-GYM-CULTURE-LOGO-SVG.png" 
                 alt="The Gym Culture Logo" 
-                className="h-16 w-auto object-contain"
+                className="h-10 md:h-16 w-auto object-contain"
                 referrerPolicy="no-referrer"
               />
             </Link>
