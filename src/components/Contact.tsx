@@ -12,13 +12,61 @@ import { locationsData } from '../data/locations';
 
 const Contact = () => {
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
+  const [errors, setErrors] = useState({ name: '', email: '', subject: '', message: '', location: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { name: '', email: '', subject: '', message: '', location: '' };
+
+    if (!formState.name.trim()) {
+      newErrors.name = 'Name is required';
+      isValid = false;
+    } else if (formState.name.length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+      isValid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formState.email.trim()) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!emailRegex.test(formState.email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    if (!formState.subject.trim()) {
+      newErrors.subject = 'Subject is required';
+      isValid = false;
+    }
+
+    if (!formState.location) {
+      newErrors.location = 'Please select a location';
+      isValid = false;
+    }
+
+    if (!formState.message.trim()) {
+      newErrors.message = 'Message is required';
+      isValid = false;
+    } else if (formState.message.length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 5000);
-    setFormState({ name: '', email: '', subject: '', message: '', location: '' });
+    
+    if (validateForm()) {
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 5000);
+      setFormState({ name: '', email: '', subject: '', message: '', location: '' });
+      setErrors({ name: '', email: '', subject: '', message: '', location: '' });
+    }
   };
 
   return (
@@ -96,44 +144,55 @@ const Contact = () => {
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Full Name</label>
                 <input 
-                  required
                   type="text" 
                   value={formState.name}
-                  onChange={(e) => setFormState({...formState, name: e.target.value})}
+                  onChange={(e) => {
+                    setFormState({...formState, name: e.target.value});
+                    if (errors.name) setErrors({...errors, name: ''});
+                  }}
                   placeholder="John Doe"
-                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                  className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.name ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 />
+                {errors.name && <p className="text-brand text-xs mt-1">{errors.name}</p>}
               </div>
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Email Address</label>
                 <input 
-                  required
                   type="email" 
                   value={formState.email}
-                  onChange={(e) => setFormState({...formState, email: e.target.value})}
+                  onChange={(e) => {
+                    setFormState({...formState, email: e.target.value});
+                    if (errors.email) setErrors({...errors, email: ''});
+                  }}
                   placeholder="john@example.com"
-                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                  className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.email ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 />
+                {errors.email && <p className="text-brand text-xs mt-1">{errors.email}</p>}
               </div>
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Subject</label>
                 <input 
-                  required
                   type="text" 
                   value={formState.subject}
-                  onChange={(e) => setFormState({...formState, subject: e.target.value})}
+                  onChange={(e) => {
+                    setFormState({...formState, subject: e.target.value});
+                    if (errors.subject) setErrors({...errors, subject: ''});
+                  }}
                   placeholder="Membership Inquiry"
-                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                  className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.subject ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 />
+                {errors.subject && <p className="text-brand text-xs mt-1">{errors.subject}</p>}
               </div>
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Preferred Location</label>
                 <div className="relative">
                   <select 
-                    required
                     value={formState.location}
-                    onChange={(e) => setFormState({...formState, location: e.target.value})}
-                    className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base appearance-none cursor-pointer"
+                    onChange={(e) => {
+                      setFormState({...formState, location: e.target.value});
+                      if (errors.location) setErrors({...errors, location: ''});
+                    }}
+                    className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base appearance-none cursor-pointer ${errors.location ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                   >
                     <option value="" disabled className="bg-ink">Select a Location</option>
                     {locationsData.map((loc) => (
@@ -144,17 +203,21 @@ const Contact = () => {
                   </select>
                   <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-paper/40 pointer-events-none" />
                 </div>
+                {errors.location && <p className="text-brand text-xs mt-1">{errors.location}</p>}
               </div>
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Message</label>
                 <textarea 
-                  required
                   rows={3}
                   value={formState.message}
-                  onChange={(e) => setFormState({...formState, message: e.target.value})}
+                  onChange={(e) => {
+                    setFormState({...formState, message: e.target.value});
+                    if (errors.message) setErrors({...errors, message: ''});
+                  }}
                   placeholder="Tell us how we can help..."
-                  className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all resize-none text-base leading-relaxed"
+                  className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all resize-none text-base leading-relaxed ${errors.message ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 ></textarea>
+                {errors.message && <p className="text-brand text-xs mt-1">{errors.message}</p>}
               </div>
               
               <button 

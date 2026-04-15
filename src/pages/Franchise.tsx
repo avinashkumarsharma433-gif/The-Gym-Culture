@@ -4,10 +4,66 @@ import { Target, Users, Trophy, Activity, Zap, Shield, Award, Check, ArrowRight 
 
 const Franchise = () => {
   const [formState, setFormState] = useState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
+  const [errors, setErrors] = useState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { name: '', email: '', phone: '', city: '', investment: '', message: '' };
+
+    if (!formState.name.trim()) {
+      newErrors.name = 'Name is required';
+      isValid = false;
+    } else if (formState.name.length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+      isValid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formState.email.trim()) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!emailRegex.test(formState.email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    const phoneRegex = /^\+?[\d\s-]{10,}$/;
+    if (!formState.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+      isValid = false;
+    } else if (!phoneRegex.test(formState.phone)) {
+      newErrors.phone = 'Please enter a valid phone number';
+      isValid = false;
+    }
+
+    if (!formState.city.trim()) {
+      newErrors.city = 'City is required';
+      isValid = false;
+    }
+
+    if (!formState.investment) {
+      newErrors.investment = 'Please select an investment range';
+      isValid = false;
+    }
+
+    if (!formState.message.trim()) {
+      newErrors.message = 'Message is required';
+      isValid = false;
+    } else if (formState.message.length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) return;
+
     try {
       const response = await fetch('/api/franchise', {
         method: 'POST',
@@ -18,6 +74,7 @@ const Franchise = () => {
         setIsSubmitted(true);
         setTimeout(() => setIsSubmitted(false), 5000);
         setFormState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
+        setErrors({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
       }
     } catch (error) {
       console.error("Form submission error:", error);
@@ -236,74 +293,92 @@ const Franchise = () => {
                   <div className="space-y-1">
                     <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Full Name</label>
                     <input 
-                      required
                       type="text" 
                       value={formState.name}
-                      onChange={(e) => setFormState({...formState, name: e.target.value})}
+                      onChange={(e) => {
+                        setFormState({...formState, name: e.target.value});
+                        if (errors.name) setErrors({...errors, name: ''});
+                      }}
                       placeholder="John Doe"
-                      className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                      className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.name ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
+                    {errors.name && <p className="text-brand text-xs mt-1">{errors.name}</p>}
                   </div>
                   <div className="space-y-1">
                     <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Email Address</label>
                     <input 
-                      required
                       type="email" 
                       value={formState.email}
-                      onChange={(e) => setFormState({...formState, email: e.target.value})}
+                      onChange={(e) => {
+                        setFormState({...formState, email: e.target.value});
+                        if (errors.email) setErrors({...errors, email: ''});
+                      }}
                       placeholder="john@example.com"
-                      className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                      className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.email ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
+                    {errors.email && <p className="text-brand text-xs mt-1">{errors.email}</p>}
                   </div>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-1">
                     <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Phone Number</label>
                     <input 
-                      required
                       type="tel" 
                       value={formState.phone}
-                      onChange={(e) => setFormState({...formState, phone: e.target.value})}
+                      onChange={(e) => {
+                        setFormState({...formState, phone: e.target.value});
+                        if (errors.phone) setErrors({...errors, phone: ''});
+                      }}
                       placeholder="+91 98765 43210"
-                      className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                      className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.phone ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
+                    {errors.phone && <p className="text-brand text-xs mt-1">{errors.phone}</p>}
                   </div>
                   <div className="space-y-1">
                     <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Target City</label>
                     <input 
-                      required
                       type="text" 
                       value={formState.city}
-                      onChange={(e) => setFormState({...formState, city: e.target.value})}
+                      onChange={(e) => {
+                        setFormState({...formState, city: e.target.value});
+                        if (errors.city) setErrors({...errors, city: ''});
+                      }}
                       placeholder="Mumbai"
-                      className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base"
+                      className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.city ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
+                    {errors.city && <p className="text-brand text-xs mt-1">{errors.city}</p>}
                   </div>
                 </div>
                 <div className="space-y-1">
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Investment Range</label>
                   <select 
-                    required
                     value={formState.investment}
-                    onChange={(e) => setFormState({...formState, investment: e.target.value})}
-                    className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all text-base appearance-none"
+                    onChange={(e) => {
+                      setFormState({...formState, investment: e.target.value});
+                      if (errors.investment) setErrors({...errors, investment: ''});
+                    }}
+                    className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base appearance-none ${errors.investment ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                   >
-                    <option value="" disabled>Select Range</option>
-                    <option value="20-50">₹20L - ₹50L</option>
-                    <option value="50-100">₹50L - ₹1Cr</option>
-                    <option value="100+">₹1Cr+</option>
+                    <option value="" disabled className="bg-ink">Select Range</option>
+                    <option value="20-50" className="bg-ink">₹20L - ₹50L</option>
+                    <option value="50-100" className="bg-ink">₹50L - ₹1Cr</option>
+                    <option value="100+" className="bg-ink">₹1Cr+</option>
                   </select>
+                  {errors.investment && <p className="text-brand text-xs mt-1">{errors.investment}</p>}
                 </div>
                 <div className="space-y-1">
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Message / Background</label>
                   <textarea 
-                    required
                     rows={3}
                     value={formState.message}
-                    onChange={(e) => setFormState({...formState, message: e.target.value})}
+                    onChange={(e) => {
+                      setFormState({...formState, message: e.target.value});
+                      if (errors.message) setErrors({...errors, message: ''});
+                    }}
                     placeholder="Tell us about your business experience..."
-                    className="w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none focus:border-brand transition-all resize-none text-base leading-relaxed"
+                    className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all resize-none text-base leading-relaxed ${errors.message ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                   ></textarea>
+                  {errors.message && <p className="text-brand text-xs mt-1">{errors.message}</p>}
                 </div>
                 
                 <button 

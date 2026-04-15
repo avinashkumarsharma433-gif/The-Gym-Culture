@@ -16,13 +16,25 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    } else if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
     setSubscribed(true);
     setTimeout(() => setSubscribed(false), 3000);
     setEmail('');
+    setError('');
   };
 
   return (
@@ -77,11 +89,13 @@ const Footer = () => {
             <form onSubmit={handleSubscribe} className="relative">
               <input 
                 type="email" 
-                required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError('');
+                }}
                 placeholder="Your Email" 
-                className="w-full glass-dark border-white/5 rounded-xl px-6 py-5 focus:outline-none focus:border-brand transition-all font-light"
+                className={`w-full glass-dark border-white/5 rounded-xl px-6 py-5 focus:outline-none transition-all font-light ${error ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
               />
               <button 
                 type="submit"
@@ -90,6 +104,7 @@ const Footer = () => {
                 {subscribed ? <Check className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />}
               </button>
             </form>
+            {error && <p className="text-brand text-xs mt-2">{error}</p>}
           </div>
         </div>
 
