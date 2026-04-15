@@ -71,7 +71,7 @@ const Footer = () => {
                 { name: 'Locations', path: '/locations' },
                 { name: 'Franchise', path: '/franchise' },
                 { name: 'Contact', path: '/contact' },
-                { name: 'Admin Dashboard', path: '/admin' },
+                { name: 'Employee Login', path: '/login' },
                 { name: 'Privacy Policy', path: '#' },
               ].map((link) => (
                 <li key={link.name}>

@@ -9,11 +9,14 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { locationsData } from '../data/locations';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 const Contact = () => {
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
   const [errors, setErrors] = useState({ name: '', email: '', subject: '', message: '', location: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
     let isValid = true;
@@ -58,14 +61,28 @@ const Contact = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      setIsSubmitted(true);
-      setTimeout(() => setIsSubmitted(false), 5000);
-      setFormState({ name: '', email: '', subject: '', message: '', location: '' });
-      setErrors({ name: '', email: '', subject: '', message: '', location: '' });
+      setIsSubmitting(true);
+      try {
+        await addDoc(collection(db, 'inquiries'), {
+          ...formState,
+          type: 'contact',
+          created_at: new Date().toISOString()
+        });
+        
+        setIsSubmitted(true);
+        setTimeout(() => setIsSubmitted(false), 5000);
+        setFormState({ name: '', email: '', subject: '', message: '', location: '' });
+        setErrors({ name: '', email: '', subject: '', message: '', location: '' });
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        alert("There was an error submitting your form. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 

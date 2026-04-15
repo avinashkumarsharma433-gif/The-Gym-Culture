@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './lib/firebase';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -11,6 +13,7 @@ import Franchise from './pages/Franchise';
 import LocationDetail from './pages/LocationDetail';
 import Admin from './pages/Admin';
 import ContactPage from './pages/ContactPage';
+import Login from './pages/Login';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -46,6 +49,30 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center text-brand">Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <Router>
@@ -61,7 +88,12 @@ function App() {
               <Route path="/locations/:id" element={<PageWrapper><LocationDetail /></PageWrapper>} />
               <Route path="/franchise" element={<PageWrapper><Franchise /></PageWrapper>} />
               <Route path="/contact" element={<PageWrapper><ContactPage /></PageWrapper>} />
-              <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
+              <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+              <Route path="/admin" element={
+                <ProtectedRoute>
+                  <PageWrapper><Admin /></PageWrapper>
+                </ProtectedRoute>
+              } />
             </Routes>
           </AnimatePresence>
         </main>

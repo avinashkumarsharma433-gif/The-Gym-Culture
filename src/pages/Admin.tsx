@@ -1,38 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { Database, MessageSquare, Users, Clock, RefreshCw, ChevronRight, Search } from 'lucide-react';
+import { Database, MessageSquare, Users, Clock, RefreshCw, ChevronRight, Search, LogOut } from 'lucide-react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
+import { db, auth } from '../lib/firebase';
+import { useNavigate } from 'react-router-dom';
 
 interface Inquiry {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  phone: string;
-  city: string;
-  investment: string;
+  phone?: string;
+  city?: string;
+  investment?: string;
+  subject?: string;
+  location?: string;
   message: string;
-  created_at: string;
-}
-
-interface ChatLog {
-  id: number;
-  session_id: string;
-  role: string;
-  message: string;
+  type: string;
   created_at: string;
 }
 
 const Admin = () => {
-  const [data, setData] = useState<{ inquiries: Inquiry[], logs: ChatLog[] }>({ inquiries: [], logs: [] });
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'inquiries' | 'chats'>('inquiries');
+  const [activeTab, setActiveTab] = useState<'all' | 'contact' | 'franchise'>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/admin/data');
-      const result = await response.json();
-      setData(result);
+      const q = query(collection(db, 'inquiries'), orderBy('created_at', 'desc'));
+      const querySnapshot = await getDocs(q);
+      const data: Inquiry[] = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() } as Inquiry);
+      });
+      setInquiries(data);
     } catch (error) {
       console.error("Fetch error:", error);
     } finally {
@@ -44,16 +48,28 @@ const Admin = () => {
     fetchData();
   }, []);
 
-  const filteredInquiries = data.inquiries.filter(i => 
-    i.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    i.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    i.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/login');
+    } catch (error) {
+      console.error('Error signing out', error);
+    }
+  };
 
-  const filteredLogs = data.logs.filter(l => 
-    l.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    l.session_id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredInquiries = inquiries.filter(i => {
+    const matchesSearch = 
+      i.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      i.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (i.city && i.city.toLowerCase().includes(searchTerm.toLowerCase()));
+      
+    if (activeTab === 'all') return matchesSearch;
+    if (activeTab === 'contact') return matchesSearch && i.type === 'contact';
+    if (activeTab === 'franchise') return matchesSearch && i.type === 'franchise';
+    return matchesSearch;
+  });
+
+  const filteredLogs: any[] = []; // Removed chat logs for now
 
   return (
     <div className="pt-32 pb-16 min-h-screen bg-ink">
@@ -81,6 +97,13 @@ const Admin = () => {
             >
               <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
             </button>
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all font-mono text-xs uppercase tracking-widest font-bold"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
+            </button>
           </div>
         </div>
 
@@ -93,120 +116,107 @@ const Admin = () => {
               </div>
               <span className="font-mono text-[10px] uppercase tracking-widest text-paper/40 font-bold">Total Inquiries</span>
             </div>
-            <p className="font-display text-4xl">{data.inquiries.length}</p>
+            <p className="font-display text-4xl">{inquiries.length}</p>
           </div>
           <div className="glass p-8 rounded-3xl">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-500">
                 <MessageSquare className="w-5 h-5" />
               </div>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-paper/40 font-bold">Chat Interactions</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-paper/40 font-bold">Franchise Leads</span>
             </div>
-            <p className="font-display text-4xl">{data.logs.length}</p>
+            <p className="font-display text-4xl">{inquiries.filter(i => i.type === 'franchise').length}</p>
           </div>
           <div className="glass p-8 rounded-3xl">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-500">
                 <Database className="w-5 h-5" />
               </div>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-paper/40 font-bold">DB Status</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-paper/40 font-bold">Contact Messages</span>
             </div>
-            <p className="font-display text-4xl uppercase text-emerald-500">Active</p>
+            <p className="font-display text-4xl">{inquiries.filter(i => i.type === 'contact' || i.type === 'general_contact').length}</p>
           </div>
         </div>
 
         {/* Tabs */}
         <div className="flex gap-4 mb-8 border-b border-white/10">
           <button 
-            onClick={() => setActiveTab('inquiries')}
-            className={`pb-4 px-4 font-display text-lg uppercase tracking-wider transition-all relative ${activeTab === 'inquiries' ? 'text-brand' : 'text-paper/40'}`}
+            onClick={() => setActiveTab('all')}
+            className={`pb-4 px-4 font-display text-lg uppercase tracking-wider transition-all relative ${activeTab === 'all' ? 'text-brand' : 'text-paper/40'}`}
           >
-            Franchise Inquiries
-            {activeTab === 'inquiries' && <motion.div layoutId="tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />}
+            All Leads
+            {activeTab === 'all' && <motion.div layoutId="tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />}
           </button>
           <button 
-            onClick={() => setActiveTab('chats')}
-            className={`pb-4 px-4 font-display text-lg uppercase tracking-wider transition-all relative ${activeTab === 'chats' ? 'text-brand' : 'text-paper/40'}`}
+            onClick={() => setActiveTab('contact')}
+            className={`pb-4 px-4 font-display text-lg uppercase tracking-wider transition-all relative ${activeTab === 'contact' ? 'text-brand' : 'text-paper/40'}`}
           >
-            AI Chat Logs
-            {activeTab === 'chats' && <motion.div layoutId="tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />}
+            Contact
+            {activeTab === 'contact' && <motion.div layoutId="tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />}
+          </button>
+          <button 
+            onClick={() => setActiveTab('franchise')}
+            className={`pb-4 px-4 font-display text-lg uppercase tracking-wider transition-all relative ${activeTab === 'franchise' ? 'text-brand' : 'text-paper/40'}`}
+          >
+            Franchise
+            {activeTab === 'franchise' && <motion.div layoutId="tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />}
           </button>
         </div>
 
         {/* Content */}
-        <div className="space-y-4">
-          {activeTab === 'inquiries' ? (
-            filteredInquiries.length > 0 ? (
-              filteredInquiries.map((inquiry) => (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  key={inquiry.id} 
-                  className="glass p-6 rounded-2xl hover:bg-white/5 transition-all group"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-display text-xl uppercase tracking-wide">{inquiry.name}</h3>
-                        <span className="px-2 py-0.5 bg-brand/10 text-brand text-[10px] font-mono uppercase rounded-md font-bold">₹{inquiry.investment}L Range</span>
-                      </div>
-                      <div className="flex flex-wrap gap-4 text-sm text-paper/40 font-light">
-                        <span className="flex items-center gap-2"><Users className="w-3 h-3" /> {inquiry.email}</span>
-                        <span className="flex items-center gap-2"><ChevronRight className="w-3 h-3" /> {inquiry.phone}</span>
-                        <span className="flex items-center gap-2"><ChevronRight className="w-3 h-3" /> {inquiry.city}</span>
-                        <span className="flex items-center gap-2"><Clock className="w-3 h-3" /> {new Date(inquiry.created_at).toLocaleString()}</span>
-                      </div>
-                    </div>
-                    <div className="md:w-1/3 bg-black/20 p-4 rounded-xl text-sm text-paper/60 font-light italic">
-                      "{inquiry.message}"
-                    </div>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="text-center py-20 glass rounded-3xl">
-                <p className="text-paper/40 font-mono text-sm uppercase tracking-widest">No inquiries found</p>
-              </div>
-            )
+        <div className="glass rounded-[3rem] p-8 min-h-[500px]">
+          {loading ? (
+            <div className="h-full flex items-center justify-center min-h-[400px]">
+              <div className="w-12 h-12 border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
+            </div>
           ) : (
-            <div className="glass rounded-3xl overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-white/5 border-b border-white/10">
-                      <th className="p-4 font-mono text-[10px] uppercase tracking-widest text-paper/40">Time</th>
-                      <th className="p-4 font-mono text-[10px] uppercase tracking-widest text-paper/40">Session</th>
-                      <th className="p-4 font-mono text-[10px] uppercase tracking-widest text-paper/40">Role</th>
-                      <th className="p-4 font-mono text-[10px] uppercase tracking-widest text-paper/40">Message</th>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Date</th>
+                    <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Type</th>
+                    <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Name</th>
+                    <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Contact Info</th>
+                    <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Details</th>
+                  </tr>
+                </thead>
+                <tbody className="text-sm font-light">
+                  {filteredInquiries.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-12 text-center text-paper/40">No inquiries found.</td>
                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    {filteredLogs.map((log) => (
-                      <tr key={log.id} className="hover:bg-white/5 transition-all">
-                        <td className="p-4 text-[10px] font-mono text-paper/40 whitespace-nowrap">
-                          {new Date(log.created_at).toLocaleTimeString()}
+                  ) : (
+                    filteredInquiries.map((inquiry) => (
+                      <tr key={inquiry.id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
+                        <td className="py-6 pr-4 whitespace-nowrap text-paper/60">
+                          {new Date(inquiry.created_at).toLocaleDateString()}
                         </td>
-                        <td className="p-4 text-[10px] font-mono text-brand">
-                          {log.session_id}
-                        </td>
-                        <td className="p-4">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase font-bold ${log.role === 'user' ? 'bg-brand/10 text-brand' : 'bg-white/10 text-paper/60'}`}>
-                            {log.role}
+                        <td className="py-6 pr-4">
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider ${inquiry.type === 'franchise' ? 'bg-brand/20 text-brand' : 'bg-blue-500/20 text-blue-400'}`}>
+                            {inquiry.type.replace('_', ' ')}
                           </span>
                         </td>
-                        <td className="p-4 text-sm text-paper/80 font-light">
-                          {log.message}
+                        <td className="py-6 pr-4 font-medium">{inquiry.name}</td>
+                        <td className="py-6 pr-4">
+                          <div className="flex flex-col gap-1">
+                            <span>{inquiry.email}</span>
+                            {inquiry.phone && <span className="text-paper/40">{inquiry.phone}</span>}
+                          </div>
+                        </td>
+                        <td className="py-6 pr-4 max-w-xs">
+                          <div className="flex flex-col gap-1">
+                            {inquiry.city && <span className="text-brand text-xs uppercase tracking-wider">{inquiry.city} • {inquiry.investment}</span>}
+                            {inquiry.location && <span className="text-brand text-xs uppercase tracking-wider">{inquiry.location}</span>}
+                            {inquiry.subject && <span className="font-medium text-paper/80">{inquiry.subject}</span>}
+                            <span className="truncate text-paper/60">{inquiry.message}</span>
+                          </div>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              {filteredLogs.length === 0 && (
-                <div className="text-center py-20">
-                  <p className="text-paper/40 font-mono text-sm uppercase tracking-widest">No chat logs found</p>
-                </div>
-              )}
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
