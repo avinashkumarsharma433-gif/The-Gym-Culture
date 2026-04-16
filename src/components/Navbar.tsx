@@ -30,7 +30,7 @@ const Navbar = () => {
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4"
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative">
         <div className="glass rounded-full px-8 py-4 flex items-center justify-between border-white/5 transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] bg-ink/60">
           <NavLink to="/" className="flex items-center gap-3 group">
             <img 
@@ -100,66 +100,66 @@ const Navbar = () => {
             {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
-      </div>
 
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-[calc(100%+2rem)] left-6 right-6 lg:hidden glass-dark rounded-[2.5rem] border-white/10 shadow-2xl overflow-hidden p-[1px]"
-          >
-            <div className="max-h-[75vh] overflow-y-auto px-8 py-10 flex flex-col gap-6 rounded-[2.4rem]">
-              {navLinks.map((link) => (
-                <div key={link.name} className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between">
-                    <NavLink 
-                      to={link.path}
-                      className={({ isActive }) => `font-display text-4xl uppercase tracking-tight ${isActive && !link.path.includes('#') ? 'text-brand' : 'text-white'}`}
-                    >
-                      {link.name}
-                    </NavLink>
-                    {link.hasDropdown && (
-                      <button 
-                        onClick={() => setIsLocationsDropdownOpen(!isLocationsDropdownOpen)}
-                        className="p-2 glass rounded-full"
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-[calc(100%+2rem)] left-0 right-0 lg:hidden glass-dark rounded-[3rem] border-white/10 shadow-2xl overflow-hidden p-[1px]"
+            >
+              <div className="max-h-[75vh] overflow-y-auto px-8 py-10 flex flex-col gap-6 rounded-[2.9rem]">
+                {navLinks.map((link) => (
+                  <div key={link.name} className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                      <NavLink 
+                        to={link.path}
+                        className={({ isActive }) => `font-display text-4xl uppercase tracking-tight ${isActive && !link.path.includes('#') ? 'text-brand' : 'text-white'}`}
                       >
-                        <ChevronDown className={`w-6 h-6 transition-transform ${isLocationsDropdownOpen ? 'rotate-180' : ''}`} />
-                      </button>
+                        {link.name}
+                      </NavLink>
+                      {link.hasDropdown && (
+                        <button 
+                          onClick={() => setIsLocationsDropdownOpen(!isLocationsDropdownOpen)}
+                          className="p-2 glass rounded-full"
+                        >
+                          <ChevronDown className={`w-6 h-6 transition-transform ${isLocationsDropdownOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                      )}
+                    </div>
+                    
+                    {link.hasDropdown && isLocationsDropdownOpen && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        className="flex flex-col gap-4 pl-6 border-l border-brand/20"
+                      >
+                        <Link 
+                          to="/locations"
+                          className="font-display text-2xl uppercase tracking-tight text-paper/40"
+                        >
+                          All Locations
+                        </Link>
+                        {locationsData.map((loc) => (
+                          <Link
+                            key={loc.id}
+                            to={`/locations/${loc.id}`}
+                            className="font-display text-2xl uppercase tracking-tight text-paper/40 hover:text-brand"
+                          >
+                            {loc.name}
+                          </Link>
+                        ))}
+                      </motion.div>
                     )}
                   </div>
-                  
-                  {link.hasDropdown && isLocationsDropdownOpen && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      className="flex flex-col gap-4 pl-6 border-l border-brand/20"
-                    >
-                      <Link 
-                        to="/locations"
-                        className="font-display text-2xl uppercase tracking-tight text-paper/40"
-                      >
-                        All Locations
-                      </Link>
-                      {locationsData.map((loc) => (
-                        <Link
-                          key={loc.id}
-                          to={`/locations/${loc.id}`}
-                          className="font-display text-2xl uppercase tracking-tight text-paper/40 hover:text-brand"
-                        >
-                          {loc.name}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.nav>
   );
 };

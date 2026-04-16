@@ -793,33 +793,26 @@ const FAQ = () => {
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
           <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-4 block font-bold">Got Questions?</span>
-          <h2 className="font-display text-6xl md:text-7xl uppercase tracking-tight">Common FAQs</h2>
+          <h2 className="font-display text-6xl md:text-8xl uppercase tracking-tight">Common FAQs</h2>
         </div>
         <div className="space-y-4">
           {faqs.map((faq, i) => (
-            <div key={i} className="glass rounded-2xl overflow-hidden border border-white/5">
+            <div key={i} className="glass rounded-3xl overflow-hidden border border-white/5">
               <button 
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full p-6 text-left flex items-center justify-between hover:bg-white/5 transition-colors"
+                className="w-full p-8 flex items-center justify-between text-left hover:bg-white/5 transition-all"
               >
-                <span className="font-display text-xl uppercase tracking-wide">{faq.q}</span>
-                {openIndex === i ? <Minus className="w-5 h-5 text-brand" /> : <Plus className="w-5 h-5 text-paper/40" />}
+                <span className="font-display text-2xl uppercase tracking-wide flex items-center gap-4">
+                  <Plus className={`w-6 h-6 transition-transform ${openIndex === i ? 'rotate-45 text-brand' : 'text-paper/40'}`} />
+                  {faq.q}
+                </span>
+                {openIndex === i ? <Minus className="w-6 h-6 text-brand" /> : <ChevronRight className="w-6 h-6 opacity-20" />}
               </button>
-              <AnimatePresence initial={false}>
-                {openIndex === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "circOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 pt-0 text-paper/60 font-light leading-relaxed border-t border-white/5">
-                      {faq.a}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {openIndex === i && (
+                <div className="px-8 pb-8 pl-16 text-paper/60 font-light leading-relaxed text-lg animate-in fade-in slide-in-from-top-2 duration-200">
+                  {faq.a}
+                </div>
+              )}
             </div>
           ))}
         </div>
