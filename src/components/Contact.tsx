@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
+import { useLocation } from 'react-router-dom';
 import { 
   MapPin, 
   Phone, 
@@ -14,7 +15,20 @@ import { db } from '../lib/firebase';
 import CustomSelect from './CustomSelect';
 
 const Contact = () => {
+  const location = useLocation();
+  const sectionRef = useRef<HTMLElement>(null);
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
+
+  useEffect(() => {
+    if (location.state && location.state.selectedLocation) {
+      setFormState(prev => ({ ...prev, location: location.state.selectedLocation }));
+      
+      // Smooth scroll to form section
+      setTimeout(() => {
+        sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [location]);
   const [errors, setErrors] = useState({ name: '', email: '', subject: '', message: '', location: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -150,6 +164,7 @@ const Contact = () => {
           </motion.div>
 
           <motion.div
+            ref={sectionRef}
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}

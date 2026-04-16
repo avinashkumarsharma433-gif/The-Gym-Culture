@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Phone, Clock, ArrowRight, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -42,12 +42,17 @@ const MapController = ({ activeLocation }: { activeLocation: LocationData | null
 
 const Locations = () => {
   const [activeLocation, setActiveLocation] = useState<LocationData | null>(null);
+  const navigate = useNavigate();
 
   // India bounds
   const indiaBounds = L.latLngBounds(
     L.latLng(6.5, 68.1), // South-West
     L.latLng(35.5, 97.3) // North-East
   );
+
+  const handleJoinClick = (locationName: string) => {
+    navigate('/contact', { state: { selectedLocation: locationName } });
+  };
 
   return (
     <div className="pt-24 pb-16">
@@ -114,7 +119,10 @@ const Locations = () => {
                   </div>
 
                   <div className="flex gap-4">
-                    <button className="flex-grow bg-brand text-white py-4 rounded-xl font-display text-xl uppercase tracking-widest hover:scale-[1.02] transition-all shadow-lg shadow-brand/20">
+                    <button 
+                      onClick={() => handleJoinClick(loc.name)}
+                      className="flex-grow bg-brand text-white py-4 rounded-xl font-display text-xl uppercase tracking-widest hover:scale-[1.02] transition-all shadow-lg shadow-brand/20"
+                    >
                       Join This Gym
                     </button>
                     <Link 

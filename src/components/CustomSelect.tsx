@@ -44,7 +44,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ value, onChange, options, p
       </div>
 
       {isOpen && (
-        <div className="absolute top-[calc(100%+0.5rem)] left-0 w-full glass-dark border border-white/10 rounded-2xl overflow-hidden z-50 shadow-2xl animate-in fade-in slide-in-from-top-2">
+        <div className="absolute top-[calc(100%+0.5rem)] left-0 w-full bg-ink/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden z-50 shadow-2xl animate-in fade-in slide-in-from-top-2">
           <div className="max-h-60 overflow-y-auto custom-scrollbar py-2">
             {options.map((option) => (
               <div
