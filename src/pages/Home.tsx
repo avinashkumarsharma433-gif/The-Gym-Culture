@@ -805,13 +805,13 @@ const FAQ = () => {
                 <span className="font-display text-xl uppercase tracking-wide">{faq.q}</span>
                 {openIndex === i ? <Minus className="w-5 h-5 text-brand" /> : <Plus className="w-5 h-5 text-paper/40" />}
               </button>
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {openIndex === i && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.2, ease: "circOut" }}
                     className="overflow-hidden"
                   >
                     <div className="p-6 pt-0 text-paper/60 font-light leading-relaxed border-t border-white/5">

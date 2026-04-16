@@ -42,7 +42,7 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
     >
       {children}
     </motion.div>
@@ -74,48 +74,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  useEffect(() => {
-    let ticking = false;
-    let currentX = 0;
-    let currentY = 0;
-    let currentElement: HTMLElement | null = null;
-    let rafId: number;
-
-    const updateGlow = () => {
-      if (currentElement) {
-        currentElement.style.setProperty('--x', `${currentX}`);
-        currentElement.style.setProperty('--y', `${currentY}`);
-      }
-      ticking = false;
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      // Find the closest glowing element
-      const glowElement = target.closest('.glass, .glass-dark, .btn-glow, .glass-input') as HTMLElement;
-      if (glowElement) {
-        const rect = glowElement.getBoundingClientRect();
-        currentX = e.clientX - rect.left;
-        currentY = e.clientY - rect.top;
-        currentElement = glowElement;
-
-        if (!ticking) {
-          rafId = requestAnimationFrame(updateGlow);
-          ticking = true;
-        }
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
   return (
     <Router>
-      <div className="min-h-screen selection:bg-brand selection:text-white relative">
+      <div className="min-h-screen selection:bg-brand selection:text-white relative overflow-x-hidden">
         <ScrollToTop />
         <Navbar />
         <main>

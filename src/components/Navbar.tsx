@@ -27,7 +27,7 @@ const Navbar = () => {
     <motion.nav 
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       className="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4"
     >
       <div className="max-w-7xl mx-auto px-6">
@@ -109,9 +109,9 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-[calc(100%+2rem)] left-6 right-6 lg:hidden glass-dark rounded-[2rem] border-white/10 shadow-2xl p-1"
+            className="absolute top-[calc(100%+2rem)] left-6 right-6 lg:hidden glass-dark rounded-[2.5rem] border-white/10 shadow-2xl overflow-hidden p-[1px]"
           >
-            <div className="max-h-[75vh] overflow-y-auto px-8 py-10 flex flex-col gap-6 rounded-[1.8rem]">
+            <div className="max-h-[75vh] overflow-y-auto px-8 py-10 flex flex-col gap-6 rounded-[2.4rem]">
               {navLinks.map((link) => (
                 <div key={link.name} className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
