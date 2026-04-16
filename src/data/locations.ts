@@ -15,7 +15,7 @@ export const locationsData: LocationData[] = [
   {
     id: "borivali",
     name: "Borivali",
-    address: "Near Station, Borivali East, Mumbai 400066",
+    address: "1st Floor, Above Star Bazaar, Near Railway Station, Borivali East, Mumbai, Maharashtra 400066",
     phone: "+91 98765 43213",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1200",
@@ -40,7 +40,7 @@ export const locationsData: LocationData[] = [
   {
     id: "kandivali",
     name: "Kandivali",
-    address: "Sector 8, Kandivali West, Mumbai 400067",
+    address: "2nd Floor, Infinity Mall, Sector 8, Kandivali West, Mumbai, Maharashtra 400067",
     phone: "+91 98765 43210",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200",
@@ -67,7 +67,7 @@ export const locationsData: LocationData[] = [
   {
     id: "mira-road",
     name: "Mira Road",
-    address: "Sheetal Nagar, Mira Road, Thane 401107",
+    address: "3rd Floor, Shanti Shopping Centre, Sheetal Nagar, Mira Road East, Thane, Maharashtra 401107",
     phone: "+91 98765 43212",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=1200",
@@ -92,7 +92,7 @@ export const locationsData: LocationData[] = [
   {
     id: "malad-east",
     name: "Malad East",
-    address: "Link Road, Malad East, Mumbai 400064",
+    address: "4th Floor, Evershine Mall, Link Road, Malad East, Mumbai, Maharashtra 400064",
     phone: "+91 98765 43214",
     hours: "6:00 AM - 12:00 AM",
     image: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1200",
@@ -117,7 +117,7 @@ export const locationsData: LocationData[] = [
   {
     id: "orlem",
     name: "Orlem",
-    address: "Orlem Church Road, Malad West, Mumbai 400064",
+    address: "1st Floor, Dominic Plaza, Orlem Church Road, Malad West, Mumbai, Maharashtra 400064",
     phone: "+91 98765 43215",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200",
@@ -142,7 +142,7 @@ export const locationsData: LocationData[] = [
   {
     id: "haridwar",
     name: "Haridwar",
-    address: "Main Road, Haridwar, Uttarakhand 249401",
+    address: "2nd Floor, Pentagon Mall, Main Road, SIDCUL, Haridwar, Uttarakhand 249403",
     phone: "+91 98765 43211",
     hours: "5:00 AM - 11:00 PM",
     image: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1200",
@@ -167,7 +167,7 @@ export const locationsData: LocationData[] = [
   {
     id: "sundar-nagar",
     name: "Sundar Nagar",
-    address: "Sundar Nagar, Malad West, Mumbai 400064",
+    address: "Ground Floor, SV Road, Sundar Nagar, Goregaon West, Mumbai, Maharashtra 400104",
     phone: "+91 98765 43220",
     hours: "24/7 Open",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200",

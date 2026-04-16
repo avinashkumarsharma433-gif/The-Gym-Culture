@@ -193,7 +193,7 @@ const Locations = () => {
                       </div>
                       <div>
                         <h3 className="font-display text-2xl uppercase tracking-wide mb-2 text-white">{activeLocation.name}</h3>
-                        <p className="text-paper/60 text-sm mb-4 line-clamp-2">{activeLocation.address}</p>
+                        <p className="text-paper/60 text-sm mb-4">{activeLocation.address}</p>
                         <Link 
                           to={`/locations/${activeLocation.id}`}
                           className="inline-flex items-center gap-2 text-brand text-sm font-bold uppercase tracking-wider hover:text-white transition-colors"
