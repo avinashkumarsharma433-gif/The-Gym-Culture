@@ -5,16 +5,9 @@ import { Menu, X, Dumbbell, ArrowRight, ChevronDown } from 'lucide-react';
 import { locationsData } from '../data/locations';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLocationsDropdownOpen, setIsLocationsDropdownOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Close mobile menu and dropdowns on route change
   useEffect(() => {
@@ -35,10 +28,10 @@ const Navbar = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'py-4' : 'py-8'}`}
+      className="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4"
     >
       <div className="max-w-7xl mx-auto px-6">
-        <div className={`glass-dark rounded-2xl px-8 py-4 flex items-center justify-between border-white/5 transition-all duration-500 ${isScrolled ? 'shadow-2xl shadow-black/50' : ''}`}>
+        <div className="glass rounded-full px-8 py-4 flex items-center justify-between border-white/5 transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] bg-ink/60">
           <NavLink to="/" className="flex items-center gap-3 group">
             <img 
               src="https://thegymculture.in/wp-content/uploads/2026/03/THE-GYM-CULTURE-LOGO-SVG.png" 
@@ -58,7 +51,7 @@ const Navbar = () => {
               >
                 <NavLink 
                   to={link.path}
-                  className={({ isActive }) => `flex items-center gap-1 font-mono text-xs uppercase tracking-[0.2em] font-bold transition-all hover:text-brand ${isActive && !link.path.includes('#') ? 'text-brand' : 'text-paper/60'}`}
+                  className={({ isActive }) => `flex items-center gap-1 font-mono text-xs uppercase tracking-[0.2em] font-bold transition-all hover:text-brand ${isActive && !link.path.includes('#') ? 'text-brand drop-shadow-[0_0_8px_rgba(233,1,2,0.8)]' : 'text-paper/80'}`}
                 >
                   {link.name}
                   {link.hasDropdown && <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isLocationsDropdownOpen ? 'rotate-180' : ''}`} />}
@@ -73,11 +66,11 @@ const Navbar = () => {
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64"
                       >
-                        <div className="bg-ink/90 backdrop-blur-3xl rounded-xl border border-white/10 p-4 shadow-2xl overflow-hidden">
+                        <div className="bg-ink/90 backdrop-blur-3xl rounded-2xl border border-white/10 p-4 shadow-2xl overflow-hidden">
                           <div className="flex flex-col gap-1 max-h-[400px] overflow-y-auto custom-scrollbar">
                             <Link 
                               to="/locations"
-                              className="px-4 py-3 rounded-lg hover:bg-brand/10 hover:text-brand transition-all font-mono text-xs uppercase tracking-widest border-b border-white/5 mb-2"
+                              className="px-4 py-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-mono text-xs uppercase tracking-widest border-b border-white/5 mb-2"
                             >
                               All Locations
                             </Link>
@@ -85,7 +78,7 @@ const Navbar = () => {
                               <Link
                                 key={loc.id}
                                 to={`/locations/${loc.id}`}
-                                className="px-4 py-2 rounded-lg hover:bg-white/5 hover:text-brand transition-all font-mono text-[11px] uppercase tracking-widest text-paper/60"
+                                className="px-4 py-2 rounded-xl hover:bg-white/5 hover:text-brand transition-all font-mono text-[11px] uppercase tracking-widest text-paper/60"
                               >
                                 {loc.name}
                               </Link>
@@ -101,7 +94,7 @@ const Navbar = () => {
           </div>
 
           <button 
-            className="lg:hidden text-white p-2 glass rounded-lg"
+            className="lg:hidden text-white p-2 glass rounded-full"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X /> : <Menu />}
@@ -116,10 +109,11 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-[calc(100%+1rem)] left-6 right-6 lg:hidden glass-dark rounded-3xl p-10 flex flex-col gap-6 border-white/10 shadow-2xl max-h-[80vh] overflow-y-auto"
+            className="absolute top-[calc(100%+2rem)] left-6 right-6 lg:hidden glass-dark rounded-[2rem] border-white/10 shadow-2xl p-1"
           >
-            {navLinks.map((link) => (
-              <div key={link.name} className="flex flex-col gap-4">
+            <div className="max-h-[75vh] overflow-y-auto px-8 py-10 flex flex-col gap-6 rounded-[1.8rem]">
+              {navLinks.map((link) => (
+                <div key={link.name} className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <NavLink 
                       to={link.path}
@@ -130,7 +124,7 @@ const Navbar = () => {
                     {link.hasDropdown && (
                       <button 
                         onClick={() => setIsLocationsDropdownOpen(!isLocationsDropdownOpen)}
-                        className="p-2 glass rounded-lg"
+                        className="p-2 glass rounded-full"
                       >
                         <ChevronDown className={`w-6 h-6 transition-transform ${isLocationsDropdownOpen ? 'rotate-180' : ''}`} />
                       </button>
@@ -162,6 +156,7 @@ const Navbar = () => {
                   )}
                 </div>
               ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

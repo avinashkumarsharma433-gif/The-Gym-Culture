@@ -386,7 +386,7 @@ const Franchise = () => {
                 <button 
                   type="submit"
                   disabled={isSubmitted}
-                  className={`w-full py-4 rounded-2xl font-display text-2xl uppercase tracking-widest transition-all flex items-center justify-center gap-4 ${isSubmitted ? 'bg-emerald-500 text-white' : 'bg-brand text-white hover:scale-[1.02] shadow-2xl shadow-brand/20'}`}
+                  className={`w-full py-4 rounded-xl font-display text-2xl uppercase tracking-widest transition-all flex items-center justify-center gap-4 ${isSubmitted ? 'bg-emerald-500/80 backdrop-blur-md text-white border-emerald-500/50 box-shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'btn-glow'}`}
                 >
                   {isSubmitted ? (
                     <>Inquiry Sent <Check className="w-7 h-7" /></>

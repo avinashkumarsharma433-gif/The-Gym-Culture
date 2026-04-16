@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLocation } from 'react-router-dom';
 import { 
   MapPin, 
@@ -9,15 +9,37 @@ import {
   Check, 
   ChevronDown
 } from 'lucide-react';
-import { locationsData } from '../data/locations';
+import { locationsData, LocationData } from '../data/locations';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import CustomSelect from './CustomSelect';
+
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Custom MapPin Icon
+const customIcon = L.divIcon({
+  className: 'custom-leaflet-icon',
+  html: `<div class="relative flex items-center justify-center w-10 h-10 transition-transform duration-300 hover:scale-110">
+          <div class="absolute inset-0 rounded-full animate-ping opacity-20 bg-brand"></div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E90102" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-lg"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+         </div>`,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -40],
+});
 
 const Contact = () => {
   const location = useLocation();
   const sectionRef = useRef<HTMLElement>(null);
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
+
+  // India bounds
+  const indiaBounds = L.latLngBounds(
+    L.latLng(6.5, 68.1), // South-West
+    L.latLng(35.5, 97.3) // North-East
+  );
 
   useEffect(() => {
     if (location.state && location.state.selectedLocation) {
@@ -148,19 +170,6 @@ const Contact = () => {
                 </div>
               </div>
             </div>
-
-            <div className="glass h-[400px] rounded-[3rem] overflow-hidden relative border-brand/20">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.96253456789!2d72.8345678!3d19.2045678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6d65656565b%3A0x5656565656565656!2sKandivali%20West%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
-                className="grayscale opacity-50"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
           </motion.div>
 
           <motion.div
@@ -248,7 +257,7 @@ const Contact = () => {
               <button 
                 type="submit"
                 disabled={isSubmitted}
-                className={`w-full py-4 rounded-2xl font-display text-2xl uppercase tracking-widest transition-all flex items-center justify-center gap-4 ${isSubmitted ? 'bg-emerald-500 text-white' : 'bg-brand text-white hover:scale-[1.02] shadow-2xl shadow-brand/20'}`}
+                className={`w-full py-4 font-display text-xl md:text-2xl uppercase tracking-widest transition-all gap-4 ${isSubmitted ? 'bg-emerald-500/80 rounded-full backdrop-blur-md text-white border-emerald-500/50 box-shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center justify-center' : 'btn-glow'}`}
               >
                 {isSubmitted ? (
                   <>Message Sent <Check className="w-7 h-7" /></>
@@ -259,6 +268,41 @@ const Contact = () => {
             </form>
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-20 glass h-[500px] rounded-[3rem] overflow-hidden relative border-brand/20 z-0 w-full"
+        >
+          <MapContainer 
+            center={[20.5937, 78.9629]} 
+            zoom={5} 
+            minZoom={5}
+            maxZoom={14}
+            maxBounds={indiaBounds}
+            maxBoundsViscosity={1.0}
+            scrollWheelZoom={true}
+            gestureHandling={true}
+            className="w-full h-full z-0"
+            style={{ background: '#0a0a0a' }}
+          >
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            
+            {locationsData.map((loc) => (
+              loc.coordinates && (
+                <Marker 
+                  key={loc.id}
+                  position={[loc.coordinates.lat, loc.coordinates.lng]}
+                  icon={customIcon}
+                />
+              )
+            ))}
+          </MapContainer>
+        </motion.div>
       </div>
     </section>
   );

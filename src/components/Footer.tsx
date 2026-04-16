@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-ink pt-32 pb-12 border-t border-white/5">
+    <footer className="pt-32 pb-12 relative z-10 glass-dark">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-3 gap-20 mb-32">
           <div className="lg:col-span-2">
@@ -27,7 +27,7 @@ const Footer = () => {
             </p>
             <div className="flex gap-6">
               {[Instagram, Facebook, Twitter, Youtube].map((Icon, i) => (
-                <a key={i} href="#" className="w-14 h-14 glass rounded-2xl flex items-center justify-center hover:bg-brand hover:text-white transition-all group">
+                <a key={i} href="#" className="w-14 h-14 glass rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-all group">
                   <Icon className="w-6 h-6" />
                 </a>
               ))}
@@ -58,7 +58,7 @@ const Footer = () => {
 
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-paper/40 font-mono text-[10px] uppercase tracking-[0.3em] font-bold">
-            © 2024 The Gym Culture. All Rights Reserved.
+            © 2026 The Gym Culture. All Rights Reserved.
           </p>
           <div className="flex gap-10">
             <span className="text-paper/40 font-mono text-[10px] uppercase tracking-[0.3em] font-bold cursor-pointer hover:text-brand transition-colors">Terms of Service</span>

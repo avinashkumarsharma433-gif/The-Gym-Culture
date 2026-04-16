@@ -121,15 +121,15 @@ const Locations = () => {
                   <div className="flex gap-4">
                     <button 
                       onClick={() => handleJoinClick(loc.name)}
-                      className="flex-grow bg-brand text-white py-4 rounded-xl font-display text-xl uppercase tracking-widest hover:scale-[1.02] transition-all shadow-lg shadow-brand/20"
+                      className="flex-grow btn-glow py-4 font-display text-xl uppercase tracking-widest"
                     >
                       Join This Gym
                     </button>
                     <Link 
                       to={`/locations/${loc.id}`}
-                      className="w-14 h-14 glass rounded-xl flex items-center justify-center hover:bg-white/10 transition-all"
+                      className="w-14 h-14 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all border-brand/20"
                     >
-                      <ArrowRight className="w-6 h-6 rotate-[-45deg]" />
+                      <ArrowRight className="w-6 h-6 rotate-[-45deg] text-brand" />
                     </Link>
                   </div>
                 </div>

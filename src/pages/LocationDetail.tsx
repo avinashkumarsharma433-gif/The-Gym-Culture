@@ -206,7 +206,7 @@ const LocationDetail = () => {
               <p className="text-xl text-paper/60 font-light leading-relaxed mb-12">
                 {location.about}
               </p>
-              <button className="bg-brand text-white px-12 py-6 rounded-lg font-display text-2xl uppercase tracking-widest hover:scale-[1.02] transition-all shadow-2xl shadow-brand/20">
+              <button className="btn-glow px-12 py-6 font-display text-2xl uppercase tracking-widest inline-flex">
                 Join This Branch
               </button>
             </motion.div>

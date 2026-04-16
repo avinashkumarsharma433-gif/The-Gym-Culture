@@ -98,10 +98,10 @@ const Hero = () => {
             transition={{ delay: 1.4, duration: 0.8 }}
             className="flex flex-wrap gap-6 items-center"
           >
-            <button className="bg-brand text-white px-10 py-5 md:px-12 md:py-6 rounded-lg font-display text-xl md:text-2xl uppercase tracking-widest flex items-center gap-4 hover:gap-6 transition-all group shadow-2xl shadow-brand/20">
+            <button className="btn-glow px-10 py-5 md:px-12 md:py-6 rounded-full font-display text-xl md:text-2xl uppercase tracking-widest group">
               Start Free Trial <ArrowRight className="w-6 h-6" />
             </button>
-            <button className="glass hover:bg-white/10 px-10 py-5 md:px-12 md:py-6 rounded-lg font-display text-xl md:text-2xl uppercase tracking-widest transition-all flex items-center gap-4">
+            <button className="glass hover:bg-white/10 px-10 py-5 md:px-12 md:py-6 rounded-full font-display text-xl md:text-2xl uppercase tracking-widest transition-all flex items-center gap-4 border border-white/10 hover:border-brand/50">
               <Play className="w-5 h-5 text-brand" /> Watch Film
             </button>
           </motion.div>
@@ -140,14 +140,14 @@ const Hero = () => {
 
 const Stats = () => {
   const stats = [
-    { label: 'Active Members', value: '10K+', icon: Users },
-    { label: 'Expert Trainers', value: '150+', icon: Target },
-    { label: 'Locations', value: '15+', icon: MapPin },
-    { label: 'Success Stories', value: '5K+', icon: Trophy },
+    { label: 'Active Members', value: '200+', icon: Users },
+    { label: 'Certified Trainers', value: '50+', icon: Target },
+    { label: 'Locations', value: '7', icon: MapPin },
+    { label: 'Success Stories', value: '150+', icon: Trophy },
   ];
 
   return (
-    <section className="py-24 bg-ink border-y border-white/5">
+    <section className="py-24 border-y border-white/5 relative z-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-20">
           {stats.map((stat, i) => (
@@ -201,7 +201,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-24 bg-ink">
+    <section id="services" className="py-24 relative z-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <motion.div 
@@ -244,11 +244,8 @@ const Services = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
               
               <div className="absolute bottom-0 left-0 p-12 w-full">
-                <div className="w-16 h-16 glass rounded-2xl flex items-center justify-center mb-8 transform -translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-                  <service.icon className="text-brand w-8 h-8" />
-                </div>
-                <h3 className="font-display text-5xl uppercase mb-4 tracking-wide">{service.title}</h3>
-                <p className="text-paper/60 font-light max-w-sm text-lg leading-relaxed">{service.desc}</p>
+                <h3 className="font-display text-5xl uppercase mb-4 tracking-wide group-hover:-translate-y-2 transition-transform duration-500">{service.title}</h3>
+                <p className="text-paper/60 font-light max-w-sm text-lg leading-relaxed group-hover:-translate-y-2 transition-transform duration-500">{service.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -288,7 +285,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-ink text-paper">
+    <section id="pricing" className="py-24 text-paper relative z-10">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -361,7 +358,7 @@ const Pricing = () => {
       {/* Plan Details Modal */}
       <AnimatePresence>
         {selectedPlan && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -373,7 +370,7 @@ const Pricing = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl glass rounded-[3rem] overflow-hidden shadow-2xl border-white/10"
+              className="relative w-full max-w-2xl glass rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl border-white/10 max-h-[90vh] overflow-y-auto custom-scrollbar"
             >
               <button 
                 onClick={() => setSelectedPlan(null)}
@@ -428,13 +425,13 @@ const Pricing = () => {
                       }, 2000);
                     }}
                     disabled={isJoining}
-                    className={`flex-1 py-6 rounded-2xl font-display text-2xl uppercase tracking-widest transition-all flex items-center justify-center gap-4 ${isJoining ? 'bg-emerald-500 text-white' : 'bg-brand text-white hover:scale-[1.02] shadow-2xl shadow-brand/20'}`}
+                    className={`flex-1 py-4 font-display text-2xl uppercase tracking-widest transition-all flex items-center justify-center gap-4 ${isJoining ? 'bg-emerald-500/80 rounded-full text-white' : 'btn-glow'}`}
                   >
                     {isJoining ? 'Processing...' : 'Join Now'}
                   </button>
                   <button 
                     onClick={() => setSelectedPlan(null)}
-                    className="flex-1 glass hover:bg-white/10 py-6 rounded-2xl font-display text-2xl uppercase tracking-widest transition-all"
+                    className="flex-1 glass hover:bg-white/10 py-4 rounded-full font-display text-2xl uppercase tracking-widest transition-all"
                   >
                     Close
                   </button>
@@ -478,7 +475,7 @@ const Testimonials = () => {
   const prev = () => setCurrentIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
 
   return (
-    <section id="testimonials" className="py-24 bg-ink overflow-hidden border-t border-white/5">
+    <section id="testimonials" className="py-24 overflow-hidden border-t border-white/5 relative z-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div className="max-w-2xl">
@@ -586,7 +583,7 @@ const Programs = () => {
   ];
 
   return (
-    <section className="py-24 bg-ink border-t border-white/5">
+    <section className="py-24 border-t border-white/5 relative z-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
           <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-4 block font-bold">Specialized Training</span>
@@ -683,7 +680,7 @@ const Amenities = () => {
   };
 
   return (
-    <section className="py-24 bg-ink overflow-hidden border-t border-white/5">
+    <section className="py-24 overflow-hidden border-t border-white/5 relative z-10">
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <div className="flex flex-col md:flex-row justify-between items-end gap-8">
           <div className="max-w-2xl">
@@ -792,7 +789,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-24 bg-ink border-t border-white/5">
+    <section className="py-24 border-t border-white/5 relative z-10">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
           <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-4 block font-bold">Got Questions?</span>

@@ -52,7 +52,7 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-24 bg-white/5 border-y border-white/5">
+      <section className="py-24 border-y border-white/5 relative z-10 glass-dark">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-20">
             <motion.div 
@@ -60,24 +60,36 @@ const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="glass p-12 rounded-[3rem]"
+              className="glass p-12 rounded-[3rem] relative overflow-hidden"
             >
-              <h2 className="font-display text-5xl uppercase mb-8 tracking-wide">Our Mission</h2>
-              <p className="text-paper/60 font-light text-lg leading-relaxed">
-                To democratize fitness by providing top-tier training environments at prices that make health accessible to every neighborhood across the country.
-              </p>
+              <div className="absolute inset-x-0 top-0 h-48 opacity-20 z-0">
+                <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1000" alt="Mission" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink"></div>
+              </div>
+              <div className="relative z-10 pt-16">
+                <h2 className="font-display text-5xl uppercase mb-8 tracking-wide">Our Mission</h2>
+                <p className="text-paper/60 font-light text-lg leading-relaxed">
+                  To democratize fitness by providing top-tier training environments at prices that make health accessible to every neighborhood across the country.
+                </p>
+              </div>
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="glass p-12 rounded-[3rem] border-brand/20"
+              className="glass p-12 rounded-[3rem] relative overflow-hidden"
             >
-              <h2 className="font-display text-5xl uppercase mb-8 tracking-wide text-brand">Our Vision</h2>
-              <p className="text-paper/60 font-light text-lg leading-relaxed">
-                To become India's largest and most trusted fitness network, with 100 locations serving over 1 million members by 2029.
-              </p>
+              <div className="absolute inset-x-0 top-0 h-48 opacity-20 z-0">
+                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000" alt="Vision" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink"></div>
+              </div>
+              <div className="relative z-10 pt-16">
+                <h2 className="font-display text-5xl uppercase mb-8 tracking-wide text-brand">Our Vision</h2>
+                <p className="text-paper/60 font-light text-lg leading-relaxed">
+                  To become India's largest and most trusted fitness network, with 100 locations serving over 1 million members by 2029.
+                </p>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -99,10 +111,10 @@ const About = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="glass p-10 rounded-[2.5rem] text-center group hover:bg-brand/5 transition-all"
+                className="glass p-10 rounded-[2.5rem] text-center group transition-all"
               >
-                <div className="w-16 h-16 glass rounded-2xl flex items-center justify-center mb-8 mx-auto group-hover:bg-brand group-hover:text-white transition-all">
-                  <value.icon className="w-8 h-8" />
+                <div className="w-16 h-16 glass rounded-full flex items-center justify-center mb-8 mx-auto transition-all">
+                  <value.icon className="w-8 h-8 text-brand" />
                 </div>
                 <h3 className="font-display text-2xl uppercase mb-4 tracking-wide">{value.title}</h3>
                 <p className="text-paper/50 font-light text-sm leading-relaxed">{value.desc}</p>
@@ -113,7 +125,7 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-24 bg-ink border-t border-white/5">
+      <section className="py-24 border-t border-white/5 relative z-10 glass-dark">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
@@ -124,7 +136,7 @@ const About = () => {
               <p className="text-xl font-light mb-12 text-paper/60 leading-relaxed">
                 Our leadership team brings together decades of experience in fitness management, athlete training, and community building. We are united by a single goal: your success.
               </p>
-              <button className="glass border-white/10 hover:bg-brand hover:text-white px-10 py-5 rounded-xl font-display text-2xl uppercase tracking-widest transition-all">
+              <button className="btn-glow px-10 py-5 uppercase tracking-widest inline-flex max-w-max">
                 Join Our Team
               </button>
             </div>
