@@ -40,28 +40,23 @@ export const locationsData: LocationData[] = [
   {
     id: "kandivali",
     name: "Kandivali",
-    address: "2nd Floor, Infinity Mall, Sector 8, Kandivali West, Mumbai, Maharashtra 400067",
-    phone: "+91 98765 43210",
-    hours: "24/7 Open",
+    address: "1st floor, Kach compound, Zero No. road, Singh estate, Kandivali east, Mumbai 400101",
+    phone: "+91 8451818055",
+    hours: "Mon-Sat: 6AM-12AM, Sun: 2PM-8PM",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200",
     coordinates: { lat: 19.2034567, lng: 72.8727588 },
-    about: "Our flagship location in Kandivali is a state-of-the-art facility designed to provide the ultimate fitness experience. Spanning over 10,000 sq. ft., this gym is equipped with the latest international equipment and a team of elite trainers dedicated to your success.",
+    about: "Located in the heart of Singh Estate, our Kandivali East branch offers a massive workout floor with specialized zones for every fitness style. From high-intensity cardio to heavy weight training, we provide the perfect environment for your transformation.",
     services: [
       "Personal Training",
-      "Group HIIT Classes",
-      "Yoga & Meditation",
-      "Functional Training",
-      "Cardio & Endurance",
-      "Strength Training"
+      "Crossfit",
+      "Strength Training",
+      "Cardio"
     ],
     amenities: [
-      "24/7 Access",
-      "Luxury Locker Rooms",
-      "Steam & Sauna",
-      "Protein Bar",
-      "Free Wi-Fi",
       "Valet Parking",
-      "Towel Service"
+      "Certified Trainers",
+      "Steam Room",
+      "Shower room"
     ]
   },
   {
@@ -117,26 +112,23 @@ export const locationsData: LocationData[] = [
   {
     id: "orlem",
     name: "Orlem",
-    address: "1st Floor, Dominic Plaza, Orlem Church Road, Malad West, Mumbai, Maharashtra 400064",
-    phone: "+91 98765 43215",
-    hours: "24/7 Open",
+    address: "1st floor Grotto Heritage, Malad Marve Rd, opp Orlem Church, Lourdes Colony, Malad West, Mumbai, Maharashtra 400064",
+    phone: "+91 7027028387",
+    hours: "24/6 Mon-Sat, Sun: 11AM-8PM",
     image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200",
     coordinates: { lat: 19.1955104, lng: 72.8373156 },
-    about: "The Orlem branch offers a cozy yet powerful workout environment. Known for its personalized attention and friendly community, it's the perfect place to start your fitness transformation.",
+    about: "Situated right opposite the iconic Orlem Church, our Orlem branch is the community hub for fitness enthusiasts in Malad West. With 24/6 access and premium amenities like ice showers, we push the boundaries of luxury fitness.",
     services: [
       "Personal Training",
-      "Yoga",
-      "Aerobics",
-      "Strength & Conditioning",
-      "Post-Rehab Training"
+      "Crossfit",
+      "Strength Training",
+      "Cardio"
     ],
     amenities: [
-      "24/7 Access",
-      "Boutique Studio Feel",
-      "Modern Cardio Machines",
-      "Changing Rooms",
-      "Water Station",
-      "Expert Guidance"
+      "Certified Trainers",
+      "Steam Room",
+      "Shower room",
+      "Ice Shower"
     ]
   },
   {

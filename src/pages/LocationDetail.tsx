@@ -63,6 +63,8 @@ const LocationDetail = () => {
     "Personal Training": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800",
     "Group HIIT Classes": "https://images.unsplash.com/photo-1518611012118-29a8d63ee0c2?q=80&w=800",
     "Yoga & Meditation": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800",
+    "Crossfit": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800",
+    "Cardio": "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=800",
     "Cardio & Endurance": "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=800",
     "Strength Training": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800",
     "Zumba Classes": "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?q=80&w=800",
@@ -119,7 +121,10 @@ const LocationDetail = () => {
     "Filtered Water": "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800",
     "Personal Lockers": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=800",
     "CCTV Security": "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800",
-    "Parking": "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=800"
+    "Parking": "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=800",
+    "Certified Trainers": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800",
+    "Shower room": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=800",
+    "Ice Shower": "https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=800"
   };
 
   const trainers = [
