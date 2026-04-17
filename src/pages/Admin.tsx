@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
-import { Database, MessageSquare, Users, Clock, RefreshCw, ChevronRight, Search, LogOut, Trash2, Download, CheckSquare, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Database, MessageSquare, Users, Clock, RefreshCw, ChevronRight, Search, LogOut, Trash2, Download, CheckSquare, X, Calendar, ChevronLeft, CalendarDays, ArrowRight, XCircle } from 'lucide-react';
 import { collection, getDocs, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { db, auth } from '../lib/firebase';
 import { useNavigate } from 'react-router-dom';
+import CustomDatePicker from '../components/CustomDatePicker';
 
 interface Inquiry {
   id: string;
@@ -26,6 +27,11 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'all' | 'contact' | 'franchise'>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [lastSelectedId, setLastSelectedId] = useState<string | null>(null);
   const [viewingInquiry, setViewingInquiry] = useState<Inquiry | null>(null);
@@ -79,11 +85,44 @@ const Admin = () => {
     return { ...i, matchReason };
   }).filter(i => {
     if (searchTerm && !i.matchReason) return false;
-    if (activeTab === 'all') return true;
-    if (activeTab === 'contact') return i.type === 'contact' || i.type === 'general_contact';
-    if (activeTab === 'franchise') return i.type === 'franchise';
+    if (activeTab === 'contact' && i.type !== 'contact' && i.type !== 'general_contact') return false;
+    if (activeTab === 'franchise' && i.type !== 'franchise') return false;
+    
+    const itemDate = new Date(i.created_at);
+    
+    let filterStartStr = startDate;
+    let filterEndStr = endDate;
+
+    if (startDate && !endDate) {
+      filterEndStr = startDate;
+    } else if (!startDate && endDate) {
+      filterStartStr = endDate;
+    }
+
+    if (filterStartStr) {
+      const start = new Date(filterStartStr);
+      start.setHours(0, 0, 0, 0);
+      if (itemDate < start) return false;
+    }
+    
+    if (filterEndStr) {
+      const end = new Date(filterEndStr);
+      end.setHours(23, 59, 59, 999);
+      if (itemDate > end) return false;
+    }
+    
     return true;
   });
+
+  const totalPages = Math.ceil(filteredInquiries.length / itemsPerPage);
+  const paginatedInquiries = filteredInquiries.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, activeTab, startDate, endDate]);
 
   const handleSelect = (e: React.MouseEvent, id: string) => {
     const newSelected = new Set(selectedIds);
@@ -108,10 +147,17 @@ const Admin = () => {
   };
 
   const handleSelectAll = () => {
-    if (selectedIds.size === filteredInquiries.length) {
-      setSelectedIds(new Set());
+    const pageIds = paginatedInquiries.map(i => i.id);
+    const allPageSelected = pageIds.length > 0 && pageIds.every(id => selectedIds.has(id));
+    
+    if (allPageSelected) {
+      const newSelected = new Set(selectedIds);
+      pageIds.forEach(id => newSelected.delete(id));
+      setSelectedIds(newSelected);
     } else {
-      setSelectedIds(new Set(filteredInquiries.map(i => i.id)));
+      const newSelected = new Set(selectedIds);
+      pageIds.forEach(id => newSelected.add(id));
+      setSelectedIds(newSelected);
     }
   };
 
@@ -171,7 +217,42 @@ const Admin = () => {
             <span className="font-mono text-brand text-xs tracking-[0.5em] uppercase mb-2 block font-bold">Admin Dashboard</span>
             <h1 className="font-display text-5xl uppercase tracking-tight">Data Control Center</h1>
           </div>
-          <div className="flex flex-wrap items-center gap-3 md:gap-4">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-6 md:mt-0">
+            <div className="flex items-center glass rounded-xl px-4 py-2.5 shrink-0 max-w-full gap-3 transition-all focus-within:border-brand/40 border-white/5 hover:border-white/10 relative z-50">
+               <CalendarDays className="w-4 h-4 text-brand shrink-0" />
+               <div className="flex items-center gap-2">
+                 <CustomDatePicker 
+                   value={startDate}
+                   onChange={setStartDate}
+                   placeholder="Start Date"
+                 />
+                 <ArrowRight className="w-3 h-3 text-brand/40 shrink-0" />
+                 <CustomDatePicker 
+                   value={endDate}
+                   onChange={setEndDate}
+                   placeholder="End Date"
+                 />
+               </div>
+               <AnimatePresence>
+                 {(startDate || endDate) && (
+                   <motion.div 
+                     initial={{ opacity: 0, scale: 0.8, width: 0 }}
+                     animate={{ opacity: 1, scale: 1, width: 'auto' }}
+                     exit={{ opacity: 0, scale: 0.8, width: 0 }}
+                     className="pl-2 border-l border-white/10 overflow-hidden"
+                   >
+                     <button 
+                       onClick={() => { setStartDate(''); setEndDate(''); }} 
+                       className="text-paper/40 hover:text-brand transition-colors flex items-center justify-center p-1 rounded-md hover:bg-white/5"
+                       title="Clear Dates"
+                     >
+                       <XCircle className="w-4 h-4" />
+                     </button>
+                   </motion.div>
+                 )}
+               </AnimatePresence>
+            </div>
+
             <div className="relative flex-grow md:flex-grow-0">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-paper/30" />
               <input 
@@ -286,7 +367,7 @@ const Admin = () => {
                   <tr className="border-b border-white/10">
                     <th className="pb-4 pl-2 w-10">
                       <button onClick={handleSelectAll} className="text-paper/40 hover:text-brand transition-colors">
-                        <CheckSquare className={`w-5 h-5 ${selectedIds.size === filteredInquiries.length && filteredInquiries.length > 0 ? 'text-brand' : ''}`} />
+                        <CheckSquare className={`w-5 h-5 ${paginatedInquiries.length > 0 && paginatedInquiries.every(i => selectedIds.has(i.id)) ? 'text-brand' : ''}`} />
                       </button>
                     </th>
                     <th className="pb-4 font-mono text-xs uppercase tracking-widest text-paper/40 font-bold">Date</th>
@@ -297,43 +378,45 @@ const Admin = () => {
                   </tr>
                 </thead>
                 <tbody className="text-sm font-light">
-                  {filteredInquiries.length === 0 ? (
+                  {paginatedInquiries.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-12 text-center text-paper/40">No inquiries found.</td>
+                      <td colSpan={6} className="py-12 text-center text-paper/40">
+                        {filteredInquiries.length === 0 ? "No inquiries found." : "No inquiries on this page."}
+                      </td>
                     </tr>
                   ) : (
-                    filteredInquiries.map((inquiry) => (
+                    paginatedInquiries.map((inquiry) => (
                       <tr 
                         key={inquiry.id} 
                         className={`border-b border-white/5 hover:bg-white/5 transition-colors group ${selectedIds.has(inquiry.id) ? 'bg-brand/5' : ''}`}
                       >
-                        <td className="py-6 pl-2">
+                        <td className="py-3.5 pl-2">
                           <button onClick={(e) => handleSelect(e, inquiry.id)} className="text-paper/20 hover:text-brand transition-colors">
                             <CheckSquare className={`w-5 h-5 ${selectedIds.has(inquiry.id) ? 'text-brand' : ''}`} />
                           </button>
                         </td>
-                        <td className="py-6 pr-4 whitespace-nowrap text-paper/60">
+                        <td className="py-3.5 pr-4 whitespace-nowrap text-paper/60">
                           {new Date(inquiry.created_at).toLocaleDateString()}
                         </td>
-                        <td className="py-6 pr-4">
+                        <td className="py-3.5 pr-4">
                           <span className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider ${inquiry.type === 'franchise' ? 'bg-brand/20 text-brand' : 'bg-blue-500/20 text-blue-400'}`}>
                             {inquiry.type.replace('_', ' ')}
                           </span>
                         </td>
-                        <td className="py-6 pr-4 font-medium">
+                        <td className="py-3.5 pr-4 font-medium">
                           {inquiry.name}
                           {inquiry.matchReason && <span className="block text-[10px] font-mono text-brand mt-1">{inquiry.matchReason}</span>}
                         </td>
-                        <td className="py-6 pr-4">
-                          <div className="flex flex-col gap-1">
-                            <span>{inquiry.email}</span>
-                            {inquiry.phone && <span className="text-paper/40">{inquiry.phone}</span>}
+                        <td className="py-3.5 pr-4">
+                          <div className="flex flex-col gap-0.5">
+                            <span className="leading-tight">{inquiry.email}</span>
+                            {inquiry.phone && <span className="text-paper/40 text-xs leading-tight">{inquiry.phone}</span>}
                           </div>
                         </td>
-                        <td className="py-6 text-right">
+                        <td className="py-3.5 text-right">
                           <button 
                             onClick={() => setViewingInquiry(inquiry)}
-                            className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-mono uppercase tracking-wider transition-all text-brand"
+                            className="px-4 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-mono uppercase tracking-wider transition-all text-brand"
                           >
                             View Details
                           </button>
@@ -343,6 +426,34 @@ const Admin = () => {
                   )}
                 </tbody>
               </table>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex flex-col sm:flex-row items-center justify-between border-t border-white/10 pt-6 mt-4 gap-4">
+                  <div className="text-sm text-paper/40 font-mono">
+                    Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredInquiries.length)} of {filteredInquiries.length} leads
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="p-2 bg-white/5 rounded-lg text-white disabled:opacity-30 hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <div className="text-sm font-mono px-4 py-2 glass rounded-lg min-w-[100px] text-center">
+                      Page {currentPage} of {totalPages}
+                    </div>
+                    <button 
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="p-2 bg-white/5 rounded-lg text-white disabled:opacity-30 hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
