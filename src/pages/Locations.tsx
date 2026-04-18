@@ -151,6 +151,7 @@ const Locations = () => {
               maxBounds={indiaBounds}
               maxBoundsViscosity={1.0}
               scrollWheelZoom={true}
+              gestureHandling={true}
               className="w-full h-full z-0"
               style={{ background: '#0a0a0a' }} // Match dark theme
             >

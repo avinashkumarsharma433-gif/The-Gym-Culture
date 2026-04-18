@@ -32,7 +32,7 @@ const customIcon = L.divIcon({
 
 const Contact = () => {
   const location = useLocation();
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
 
   // India bounds
@@ -283,6 +283,7 @@ const Contact = () => {
             maxBounds={indiaBounds}
             maxBoundsViscosity={1.0}
             scrollWheelZoom={true}
+            gestureHandling={true}
             className="w-full h-full z-0"
             style={{ background: '#0a0a0a' }}
           >

@@ -1,6 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import Database from "better-sqlite3";
@@ -40,6 +37,8 @@ async function startServer() {
 
   app.use(express.json());
 
+  // API Routes
+  
   // Submit Franchise Inquiry
   app.post("/api/franchise", (req, res) => {
     const { name, email, phone, city, investment, message } = req.body;
