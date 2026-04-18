@@ -9,9 +9,11 @@ import { db } from '../lib/firebase';
 let aiInstance: GoogleGenAI | null = null;
 const getAI = () => {
   if (!aiInstance) {
-    // Check multiple possible locations for the key
-    const rawKey = import.meta.env.VITE_GEMINI_API_KEY || "AI Studio Free Tier";
-    aiInstance = new GoogleGenAI({ apiKey: rawKey });
+    const key = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!key) {
+      throw new Error("Missing Gemini API Key! Please add VITE_GEMINI_API_KEY to your environment variables (Vercel).");
+    }
+    aiInstance = new GoogleGenAI({ apiKey: key });
   }
   return aiInstance;
 };
@@ -117,7 +119,7 @@ Keep answers helpful, concise, and friendly.`;
 
       const ai = getAI();
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         contents: contents,
         config: {
           systemInstruction: systemInstruction,
