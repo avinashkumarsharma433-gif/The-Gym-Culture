@@ -6,7 +6,15 @@ import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firesto
 import { GoogleGenAI } from "@google/genai";
 import { db } from '../lib/firebase';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiInstance: GoogleGenAI | null = null;
+const getAI = () => {
+  if (!aiInstance) {
+    // Check multiple possible locations for the key
+    const rawKey = (import.meta as any).env.VITE_GEMINI_API_KEY || (window as any)?.__ENV__?.GEMINI_API_KEY || "AI Studio Free Tier";
+    aiInstance = new GoogleGenAI({ apiKey: rawKey });
+  }
+  return aiInstance;
+};
 
 type Message = {
   role: 'user' | 'model';
@@ -117,6 +125,7 @@ Keep answers helpful, concise, and friendly.`;
         contents.push({ role: 'user', parts: [{ text: userMessage }] });
       }
 
+      const ai = getAI();
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: contents,
@@ -138,9 +147,11 @@ Keep answers helpful, concise, and friendly.`;
     } catch (error: any) {
       console.error(error);
       const errMsg = error?.message || String(error);
-      const errorMsg = errMsg.includes('API key') || errMsg.includes('MY_GEMINI_API_KEY') || errMsg.includes('API_KEY_INVALID') || errMsg.includes('Setup Required')
-        ? "⚠️ **Setup Required:** Please click the **Settings (gear icon)** at the top right of AI Studio, go to **Secrets**, and update your `GEMINI_API_KEY` to a valid Gemini API key (or delete the placeholder so the system default works)."
-        : 'Sorry, I am having trouble connecting right now. Please try again later.';
+      
+      let errorMsg = 'Sorry, I am having trouble connecting right now. Please try again later.';
+      if (errMsg.includes('API key') || errMsg.includes('MY_GEMINI_API_KEY') || errMsg.includes('API_KEY_INVALID') || errMsg.includes('400')) {
+        errorMsg = "⚠️ **API Key Missing:** If you deployed this website via GitHub/Vercel, you need to set `VITE_GEMINI_API_KEY` in your hosting provider's Environment Variables (or Secrets panel in AI Studio).";
+      }
         
       setMessages(prev => [...prev, { role: 'model', message: errorMsg }]);
     } finally {
