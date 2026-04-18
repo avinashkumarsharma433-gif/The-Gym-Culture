@@ -449,6 +449,81 @@ const LocationDetail = () => {
         </div>
       </section>
 
+      {/* Pricing Section (Existing) */}
+
+      {/* Gallery Section */}
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="font-mono text-brand text-xs tracking-[0.5em] uppercase mb-6 block font-bold">Inside Look</span>
+            <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tight mb-8">Facility Gallery</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1,2,3,4,5,6,7,8].map((i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className={`relative rounded-3xl overflow-hidden glass ${i === 1 || i === 4 ? 'col-span-2 row-span-2' : ''} aspect-square`}
+              >
+                <img 
+                  src={`https://picsum.photos/seed/locationsgallery${location.id}${i}/800/800`} 
+                  alt="Gallery" 
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-110"
+                  referrerPolicy="no-referrer"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section className="py-24 px-6 border-t border-white/5 bg-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <div>
+              <span className="font-mono text-brand text-xs tracking-[0.5em] uppercase mb-6 block font-bold">Testimonials</span>
+              <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tight">Member Reviews</h2>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex text-brand">
+                {[1,2,3,4,5].map(i => <Star key={i} className="w-6 h-6 fill-current"/>)}
+              </div>
+              <span className="font-mono text-sm uppercase">4.8/5 ({location.name})</span>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+               <motion.div
+                 key={i}
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: i * 0.1 }}
+                 className="glass p-8 rounded-3xl"
+               >
+                 <div className="flex text-brand mb-6">
+                   {[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-current"/>)}
+                 </div>
+                 <p className="text-paper/60 font-light italic mb-8">"Absolutely phenomenal facility. The equipment is top tier and the trainers in {location.name} are super supportive. Best gym I've joined."</p>
+                 <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden border border-brand/20">
+                      <img src={`https://picsum.photos/seed/memberreview${location.id}${i}/100/100`} alt="Member" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <h4 className="font-display uppercase tracking-wide">Local Member</h4>
+                      <p className="font-mono text-[10px] uppercase text-paper/40 tracking-widest">Active 6 months</p>
+                    </div>
+                 </div>
+               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className="py-24 px-6 bg-white/5">
         <div className="max-w-4xl mx-auto">

@@ -183,23 +183,25 @@ const Admin = () => {
     if (selectedData.length === 0) return;
 
     const headers = ['Date', 'Type', 'Name', 'Email', 'Phone', 'City', 'Location', 'Investment', 'Subject', 'Message'];
-    const csvContent = [
+    const csvRows = [
       headers.join(','),
       ...selectedData.map(i => [
         new Date(i.created_at).toLocaleString().replace(/,/g, ''),
         i.type,
         `"${i.name}"`,
         `"${i.email}"`,
-        `"${i.phone || ''}"`,
+        `\t${i.phone || ''}`,
         `"${i.city || ''}"`,
         `"${i.location || ''}"`,
         `"${i.investment || ''}"`,
         `"${i.subject || ''}"`,
         `"${i.message.replace(/"/g, '""')}"`
       ].join(','))
-    ].join('\n');
+    ];
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const csvContent = csvRows.join('\n');
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `gym_culture_leads_${new Date().toISOString().split('T')[0]}.csv`;

@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: 'About Us', path: '/about' },
     { name: 'Locations', path: '/locations', hasDropdown: true },
     { name: 'Franchise', path: '/franchise' },
+    { name: 'Careers', path: '/careers' },
     { name: 'Contact', path: '/contact' },
   ];
 

@@ -10,6 +10,14 @@ const About = () => {
     { title: "Innovation", desc: "We constantly update our facilities with the latest fitness technology.", icon: Activity },
   ];
 
+  const certifications = [
+    "ACE Certified Professional Trainers",
+    "ISSA Fitness Nutrition Specialists",
+    "CrossFit Level 1 & 2 Affiliates",
+    "National Strength & Conditioning Assoc. (NSCA)",
+    "Recognized 'Best emerging chain' 2025"
+  ];
+
   return (
     <div className="pt-24 pb-16">
       {/* Hero Section */}
@@ -118,6 +126,31 @@ const About = () => {
                 </div>
                 <h3 className="font-display text-2xl uppercase mb-4 tracking-wide">{value.title}</h3>
                 <p className="text-paper/50 font-light text-sm leading-relaxed">{value.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Achievements / Certifications */}
+      <section className="py-24 px-6 relative z-10 glass-dark border-t border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-5xl uppercase tracking-tight mb-4 text-brand">Achievements & Certifications</h2>
+            <p className="text-paper/60 font-light">Industry recognized standards for your safety and results.</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {certifications.map((cert, i) => (
+              <motion.div 
+                key={i}
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: i * 0.1 }}
+                 className="glass p-8 rounded-3xl flex items-center gap-4 hover:border-brand/30 transition-all group"
+              >
+                <Award className="w-8 h-8 text-brand shrink-0 group-hover:scale-110 transition-transform" />
+                <span className="font-display uppercase text-lg leading-tight">{cert}</span>
               </motion.div>
             ))}
           </div>

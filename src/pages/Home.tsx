@@ -821,17 +821,156 @@ const FAQ = () => {
   );
 };
 
+const WhoWeHelp = () => {
+  const demographics = [
+    { title: "Beginners", desc: "Start your journey in a judgment-free, supportive environment.", icon: Dumbbell },
+    { title: "Weight Loss", desc: "Customized fat-loss programs that actually work.", icon: Activity },
+    { title: "Bodybuilding", desc: "Heavy lifting zones and elite equipment for serious gains.", icon: Zap },
+    { title: "Athletes", desc: "Functional and sport-specific training to boost performance.", icon: Target },
+  ];
+  return (
+    <section className="py-24 border-t border-white/5 relative z-10 glass-dark">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-4 block font-bold">Fitness for All</span>
+          <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tight">Who We Help</h2>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {demographics.map((item, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="glass p-10 rounded-[2.5rem] flex flex-col items-center text-center group border border-white/5 hover:border-brand/30 transition-all"
+            >
+              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <item.icon className="w-8 h-8 text-brand" />
+              </div>
+              <h3 className="font-display text-2xl uppercase mb-4">{item.title}</h3>
+              <p className="text-paper/60 font-light text-sm">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const HowItWorks = () => {
+  const steps = [
+    { step: "01", title: "Book Free Trial", desc: "Claim your 3-day pass online." },
+    { step: "02", title: "Get Your Plan", desc: "Consult with our expert trainers." },
+    { step: "03", title: "Transform", desc: "Hit the floor and see real results." },
+  ];
+  return (
+    <section className="py-24 border-t border-white/5 relative z-10">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-4 block font-bold">Simple Process</span>
+          <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tight">How It Works</h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {steps.map((item, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="glass p-10 rounded-[3rem] relative border border-white/5 text-center group"
+            >
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-16 h-16 bg-brand rounded-full flex items-center justify-center font-display text-2xl text-white outline outline-4 outline-ink">
+                {item.step}
+              </div>
+              <h3 className="font-display text-3xl uppercase mb-4 mt-4">{item.title}</h3>
+              <p className="text-paper/60 font-light">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const LocationsPreview = () => {
+  return (
+    <section className="py-24 border-t border-white/5 relative z-10 glass-dark">
+      <div className="max-w-7xl mx-auto px-6 text-center">
+        <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-4 block font-bold">Our Presence</span>
+        <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tight mb-8">7 Premium Locations</h2>
+        <p className="text-paper/60 max-w-2xl mx-auto text-lg mb-12">
+          From Borivali to Haridwar, find a Gym Culture branch near you.
+        </p>
+        <a href="/locations" className="btn-glow px-10 py-5 rounded-full font-display text-xl uppercase inline-flex items-center gap-3">
+          Explore All Locations <ArrowRight className="w-5 h-5" />
+        </a>
+      </div>
+    </section>
+  );
+};
+
+const TrainersPreview = () => {
+  return (
+    <section className="py-24 border-t border-white/5 relative z-10">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-4 block font-bold">The Experts</span>
+          <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tight">Meet Our Top Trainers</h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[1,2,3,4].map((i) => (
+             <div key={i} className="aspect-[3/4] glass rounded-3xl overflow-hidden relative group">
+               <img 
+                 src={`https://picsum.photos/seed/hometrainer${i}/400/600`} 
+                 alt="Trainer" 
+                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-duration-700"
+                 referrerPolicy="no-referrer"
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
+               <div className="absolute bottom-6 left-6">
+                 <p className="font-display text-xl uppercase mb-1">Elite Coach</p>
+                 <p className="font-mono text-[10px] uppercase tracking-widest text-brand">Certified</p>
+               </div>
+             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const CTASection = () => {
+  return (
+    <section className="py-32 relative z-10 border-t border-white/5 bg-brand">
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <h2 className="font-display text-5xl md:text-8xl uppercase tracking-tight text-white mb-8">
+          Start Your Fitness Journey Today
+        </h2>
+        <a href="/contact" className="bg-white text-brand hover:bg-gray-100 px-10 py-5 rounded-full font-display text-2xl uppercase inline-flex items-center gap-3 transition-transform hover:scale-105 shadow-2xl">
+          Join Now <ArrowRight className="w-5 h-5" />
+        </a>
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
   return (
     <>
       <Hero />
+      <WhoWeHelp />
       <Stats />
       <Services />
-      <Programs />
       <Amenities />
-      <Pricing />
       <Testimonials />
+      <HowItWorks />
+      <LocationsPreview />
+      <TrainersPreview />
+      <Pricing />
       <FAQ />
+      <CTASection />
     </>
   );
 };

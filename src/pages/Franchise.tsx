@@ -1,9 +1,32 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Target, Users, Trophy, Activity, Zap, Shield, Award, Check, ArrowRight, ChevronDown } from 'lucide-react';
+import { Target, Users, Trophy, Activity, Zap, Shield, Award, Check, ArrowRight, ChevronDown, Plus, Minus, Star } from 'lucide-react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import CustomSelect from '../components/CustomSelect';
+
+const FranchiseFAQItem = ({ faq }: { faq: { q: string, a: string } }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="glass rounded-3xl overflow-hidden border border-white/5">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full p-8 flex items-center justify-between text-left hover:bg-white/5 transition-all"
+      >
+        <span className="font-display text-xl uppercase tracking-wide flex items-center gap-4">
+          <Plus className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-45 text-brand' : 'text-paper/40'}`} />
+          {faq.q}
+        </span>
+        {isOpen ? <Minus className="w-5 h-5 text-brand" /> : <ChevronDown className="w-5 h-5 opacity-20" />}
+      </button>
+      {isOpen && (
+          <div className="px-8 pb-8 pl-16 text-paper/60 font-light text-lg">
+            {faq.a}
+          </div>
+      )}
+    </div>
+  );
+};
 
 const Franchise = () => {
   const [formState, setFormState] = useState({ name: '', email: '', phone: '', city: '', investment: '', message: '' });
@@ -255,6 +278,88 @@ const Franchise = () => {
             </motion.div>
           </div>
         </div>
+      </section>
+
+      {/* Franchise Process */}
+      <section className="py-24 px-6 border-t border-white/5 relative z-10 glass-dark">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-5xl uppercase tracking-tight mb-4 text-white">The Setup Process</h2>
+            <p className="text-paper/60 font-light">From agreement to grand opening, we are with you every step.</p>
+          </div>
+          <div className="grid md:grid-cols-4 gap-6">
+            {[ 
+              { title: "Application meeting", desc: "Submit your details and discuss goals with our setup team.", step: "1" },
+              { title: "Site Selection", desc: "We help you find the perfect location with high footfall potential.", step: "2" },
+              { title: "Setup & Training", desc: "Equipment installation and rigorous training for your staff.", step: "3" },
+              { title: "Grand Opening", desc: "Marketing push and a grand launch event to drive Day-1 sales.", step: "4" }
+            ].map((step, i) => (
+             <motion.div
+               key={i}
+               initial={{ opacity: 0, y: 20 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               transition={{ delay: i * 0.1 }}
+               className="glass p-8 rounded-3xl relative overflow-hidden group hover:border-brand/30"
+             >
+                <div className="text-5xl font-display text-brand/20 mb-4">{step.step}</div>
+                <h3 className="font-display text-2xl uppercase mb-2 group-hover:text-brand transition-colors">{step.title}</h3>
+                <p className="text-sm font-light text-paper/60">{step.desc}</p>
+             </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Franchise Testimonials */}
+      <section className="py-24 px-6 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-5xl uppercase tracking-tight mb-4">Partner Success Stories</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+               <motion.div
+                 key={i}
+                 initial={{ opacity: 0, scale: 0.95 }}
+                 whileInView={{ opacity: 1, scale: 1 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: i * 0.1 }}
+                 className="glass p-8 rounded-3xl border border-white/5"
+               >
+                 <div className="flex text-brand mb-6">
+                   {[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-current"/>)}
+                 </div>
+                 <p className="text-paper/60 font-light italic mb-8">"Partnering with Gym Culture was the best business decision. I achieved break-even in just 14 months thanks to their incredible support and brand recognition."</p>
+                 <div className="flex items-center gap-4">
+                    <img src={`https://picsum.photos/seed/franchiseowner${i}/100/100`} alt="Owner" className="w-12 h-12 rounded-full object-cover" />
+                    <div>
+                      <h4 className="font-display uppercase tracking-wide">Owner Name</h4>
+                      <p className="font-mono text-[10px] uppercase text-brand tracking-widest">Mumbai Branch</p>
+                    </div>
+                 </div>
+               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Franchise FAQ */}
+      <section className="py-24 px-6 border-t border-white/5 bg-white/5">
+         <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="font-display text-5xl uppercase tracking-tight mb-4">Frequently Asked Questions</h2>
+            </div>
+            <div className="space-y-4">
+              {[
+                { q: "What is the minimum area required?", a: "We require a minimum carpet area of 3,000 sq.ft. Ideally, 5,000+ sq.ft for a full-scale premium club." },
+                { q: "How long is the franchise agreement?", a: "The standard initial term is 5 years, with an option to renew." },
+                { q: "Do you assist with financing?", a: "We can connect you with banking partners who have pre-approved our franchise model for business loans." }
+              ].map((faq, i) => (
+                <FranchiseFAQItem key={i} faq={faq} />
+              ))}
+            </div>
+         </div>
       </section>
 
       {/* Investment & Form */}

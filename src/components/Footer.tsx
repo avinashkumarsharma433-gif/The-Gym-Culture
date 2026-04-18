@@ -42,6 +42,7 @@ const Footer = () => {
                 { name: 'About Us', path: '/about' },
                 { name: 'Locations', path: '/locations' },
                 { name: 'Franchise', path: '/franchise' },
+                { name: 'Careers', path: '/careers' },
                 { name: 'Contact', path: '/contact' },
                 { name: 'Employee Login', path: '/login' },
                 { name: 'Privacy Policy', path: '#' },
