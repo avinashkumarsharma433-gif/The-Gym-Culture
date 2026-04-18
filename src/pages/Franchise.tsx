@@ -5,7 +5,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import CustomSelect from '../components/CustomSelect';
 
-const FranchiseFAQItem = ({ faq }: { faq: { q: string, a: string } }) => {
+const FranchiseFAQItem = ({ faq }: { faq: { q: string, a: string }, key?: React.Key }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="glass rounded-3xl overflow-hidden border border-white/5">
