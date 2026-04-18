@@ -10,7 +10,7 @@ let aiInstance: GoogleGenAI | null = null;
 const getAI = () => {
   if (!aiInstance) {
     // Check multiple possible locations for the key
-    const rawKey = (import.meta as any).env.VITE_GEMINI_API_KEY || (window as any)?.__ENV__?.GEMINI_API_KEY || "AI Studio Free Tier";
+    const rawKey = import.meta.env.VITE_GEMINI_API_KEY || (typeof window !== 'undefined' ? (window as any)?.__ENV__?.GEMINI_API_KEY : undefined) || "AI Studio Free Tier";
     aiInstance = new GoogleGenAI({ apiKey: rawKey });
   }
   return aiInstance;
@@ -151,6 +151,8 @@ Keep answers helpful, concise, and friendly.`;
       let errorMsg = 'Sorry, I am having trouble connecting right now. Please try again later.';
       if (errMsg.includes('API key') || errMsg.includes('MY_GEMINI_API_KEY') || errMsg.includes('API_KEY_INVALID') || errMsg.includes('400')) {
         errorMsg = "⚠️ **API Key Required for Live Website:** Ye website Google AI Studio ke bahar deployed hai. Chatbot use karne ke liye aapko pehle `aistudio.google.com/app/apikey` se ek free Gemini API Key create karni padegi, aur usko GitHub/Vercel (jaha host hai) ke Environment Variables me `VITE_GEMINI_API_KEY` naam se save karna hoga.";
+      } else {
+        errorMsg = `⚠️ Debug Error: ${errMsg}. Please take a screenshot of this.`;
       }
         
       setMessages(prev => [...prev, { role: 'model', message: errorMsg }]);
