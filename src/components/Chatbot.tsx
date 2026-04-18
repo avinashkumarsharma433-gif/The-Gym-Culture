@@ -150,7 +150,7 @@ Keep answers helpful, concise, and friendly.`;
       
       let errorMsg = 'Sorry, I am having trouble connecting right now. Please try again later.';
       if (errMsg.includes('API key') || errMsg.includes('MY_GEMINI_API_KEY') || errMsg.includes('API_KEY_INVALID') || errMsg.includes('400')) {
-        errorMsg = "⚠️ **API Key Missing:** If you deployed this website via GitHub/Vercel, you need to set `VITE_GEMINI_API_KEY` in your hosting provider's Environment Variables (or Secrets panel in AI Studio).";
+        errorMsg = "⚠️ **API Key Required for Live Website:** Ye website Google AI Studio ke bahar deployed hai. Chatbot use karne ke liye aapko pehle `aistudio.google.com/app/apikey` se ek free Gemini API Key create karni padegi, aur usko GitHub/Vercel (jaha host hai) ke Environment Variables me `VITE_GEMINI_API_KEY` naam se save karna hoga.";
       }
         
       setMessages(prev => [...prev, { role: 'model', message: errorMsg }]);
@@ -160,7 +160,7 @@ Keep answers helpful, concise, and friendly.`;
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] flex flex-col items-end pointer-events-none">
       {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
@@ -168,7 +168,7 @@ Keep answers helpful, concise, and friendly.`;
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="w-[350px] sm:w-[400px] h-[500px] flex flex-col glass rounded-[2rem] overflow-hidden border border-brand/20 shadow-2xl shadow-brand/10 mb-4 pointer-events-auto bg-ink/95"
+            className="w-[calc(100vw-3rem)] sm:w-[400px] h-[500px] max-h-[75vh] flex flex-col glass rounded-[2rem] overflow-hidden border border-brand/20 shadow-2xl shadow-brand/10 mb-4 pointer-events-auto bg-ink/95"
           >
             {/* Header */}
             <div className="bg-brand px-6 py-4 flex items-center justify-between shadow-md z-10">
