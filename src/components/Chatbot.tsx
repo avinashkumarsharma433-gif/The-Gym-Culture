@@ -80,37 +80,27 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      if (leadId) {
-        await updateDoc(doc(db, 'inquiries', leadId), {
-          chatHistory: arrayUnion({ role: 'user', message: userMessage })
-        });
+      // 1. Log user message to database (Try but don't fail chat if DB fails)
+      try {
+        if (leadId) {
+          await updateDoc(doc(db, 'inquiries', leadId), {
+            chatHistory: arrayUnion({ role: 'user', message: userMessage })
+          });
+        }
+      } catch (dbErr) {
+        console.warn("Database update failed (user message):", dbErr);
       }
 
+      // 2. Prepare AI instructions and history
       const systemInstruction = `You are "TGC Support", the official virtual assistant for "The Gym Culture". 
 Your ONLY purpose is to answer questions about THE GYM Culture using the provided context.
 DO NOT provide generic fitness advice not related to the gym or its services.
 We have 7 locations: Mira Road, Borivali, Kandivali, Malad East, Orlem, Haridwar, Sundar Nagar.
-When a user asks for specific details about a branch (like opening hours, exact address, reviews, photos, contact numbers):
-You MUST actively USE the googleMaps tool to look up that specific "Gym Culture" branch on Google Maps. 
-Use the result from the tool to answer the user's specific question completely and accurately.
-Do NOT just provide the GMB link and ask the user to check it. You MUST read the data from the tool and provide the answer in the chat directly.
-You can use these reference links if helpful for the Maps lookup, but prioritize answering with the actual data:
-1. Mira Road - https://share.google/Chi1TUk9eb6DjJb25
-2. Borivali - https://share.google/5CNEfwZ7oekg6h8ND
-3. Kandivali - https://share.google/dUce32b07NEVyBZ1W
-4. Malad East - https://share.google/CS2Ljo8AkNPfFzFiJ
-5. Orlem - https://share.google/6KElGmqsocQKPoRrG
-6. Haridwar - https://share.google/EnU3SQs7zUPe1wNhu
-7. Sundar Nagar - https://share.google/fFknzr3sZhUa6oeVd
-Locations also have basic plans starting at ₹2,499/month, premium at ₹4,999/month, and Elite at ₹12,999/quarter.
 Keep answers helpful, concise, and friendly.`;
 
-      // Build history safely (Gemini requires strict alternating roles starting with 'user')
       const contents: any[] = [];
       for (const msg of messages) {
-        // Skip the hardcoded UI welcome message
         if (msg.role === 'model' && msg.message.includes('TGC Support. How can I help')) continue;
-        
         const r = msg.role === 'user' ? 'user' : 'model';
         if (contents.length > 0 && contents[contents.length - 1].role === r) {
           contents[contents.length - 1].parts[0].text += `\n\n${msg.message}`;
@@ -119,7 +109,6 @@ Keep answers helpful, concise, and friendly.`;
         }
       }
 
-      // Append current message
       if (contents.length > 0 && contents[contents.length - 1].role === 'user') {
         contents[contents.length - 1].parts[0].text += `\n\n${userMessage}`;
       } else {
@@ -128,7 +117,7 @@ Keep answers helpful, concise, and friendly.`;
 
       const ai = getAI();
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-1.5-flash",
         contents: contents,
         config: {
           systemInstruction: systemInstruction,
@@ -137,7 +126,6 @@ Keep answers helpful, concise, and friendly.`;
       });
       
       const reply = response.text || "I'm sorry, I couldn't process that.";
-
       setMessages(prev => [...prev, { role: 'model', message: reply }]);
       
       try {
@@ -146,25 +134,20 @@ Keep answers helpful, concise, and friendly.`;
             chatHistory: arrayUnion({ role: 'model', message: reply })
           });
         }
-      } catch (dbError) {
-        console.error("Database sync failed:", dbError);
-        // We don't crash the chat if just the logging fails, 
-        // but we can log it to console.
-      }
+      } catch (e) {}
+
     } catch (error: any) {
       console.error("Chatbot Error:", error);
       const errMsg = error?.message || String(error);
-      
-      let errorMsg = '';
+      let errorMsg = `❌ **Technical Debug:** ${errMsg}\n\n`;
       
       if (errMsg.includes('API key') || errMsg.includes('400')) {
-        errorMsg = "❌ **API Key Error:** Website par Gemini API Key connect nahi ho pa rahi hai. Vercel dashboard me `VITE_GEMINI_API_KEY` checkbox check karke save karein aur redeploy karein.";
+        errorMsg += "Bhai, Gemini API Key ki problem lag rahi hai. Vercel mein Environment Variable `VITE_GEMINI_API_KEY` check karein.";
       } else if (errMsg.includes('permission') || errMsg.includes('quota')) {
-        errorMsg = "❌ **Database Error:** Firebase rules ya config me problem hai. Aapka naya project 'The Gym Culture' connect nahi hua hai code se.";
+        errorMsg += "Bhai, Firebase Rules ya Database connect nahi ho raha. Firestore Dashboard mein rules `if true` Publish karein.";
       } else {
-        errorMsg = `❌ **System Error:** ${errMsg.substring(0, 100)}... (Check Vercel Logs for full error)`;
+        errorMsg += "Kuch technical issue hai. Full log Vercel dashboard mein milega.";
       }
-        
       setMessages(prev => [...prev, { role: 'model', message: errorMsg }]);
     } finally {
       setIsLoading(false);
