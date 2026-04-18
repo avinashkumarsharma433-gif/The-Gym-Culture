@@ -5,7 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './lib/firebase';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import WhatsAppButton from './components/WhatsAppButton';
+import Chatbot from './components/Chatbot';
 import Home from './pages/Home';
 import About from './pages/About';
 import Locations from './pages/Locations';
@@ -99,7 +99,7 @@ function App() {
             </Routes>
           </AnimatePresence>
         </main>
-        <WhatsAppButton />
+        <Chatbot />
         <Footer />
       </div>
     </Router>

@@ -20,12 +20,13 @@ interface Inquiry {
   type: string;
   created_at: string;
   matchReason?: string;
+  chatHistory?: { role: string; message: string }[];
 }
 
 const Admin = () => {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'all' | 'contact' | 'franchise'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'contact' | 'franchise' | 'ai_chats'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -87,6 +88,7 @@ const Admin = () => {
     if (searchTerm && !i.matchReason) return false;
     if (activeTab === 'contact' && i.type !== 'contact' && i.type !== 'general_contact') return false;
     if (activeTab === 'franchise' && i.type !== 'franchise') return false;
+    if (activeTab === 'ai_chats' && i.type !== 'ai_chat') return false;
     
     const itemDate = new Date(i.created_at);
     
@@ -281,7 +283,7 @@ const Admin = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div className="glass p-8 rounded-3xl">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 bg-brand/20 rounded-xl flex items-center justify-center text-brand">
@@ -309,6 +311,15 @@ const Admin = () => {
             </div>
             <p className="font-display text-4xl">{inquiries.filter(i => i.type === 'contact' || i.type === 'general_contact').length}</p>
           </div>
+          <div className="glass p-8 rounded-3xl">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-500">
+                <MessageSquare className="w-5 h-5" />
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-paper/40 font-bold">AI Chat Leads</span>
+            </div>
+            <p className="font-display text-4xl">{inquiries.filter(i => i.type === 'ai_chat').length}</p>
+          </div>
         </div>
 
         {/* Tabs and Actions */}
@@ -334,6 +345,13 @@ const Admin = () => {
             >
               Franchise
               {activeTab === 'franchise' && <motion.div layoutId="tab" className="absolute -bottom-4 left-0 right-0 h-0.5 bg-brand" />}
+            </button>
+            <button 
+              onClick={() => setActiveTab('ai_chats')}
+              className={`px-4 font-display text-lg uppercase tracking-wider transition-all relative ${activeTab === 'ai_chats' ? 'text-brand' : 'text-paper/40'}`}
+            >
+              AI Chats
+              {activeTab === 'ai_chats' && <motion.div layoutId="tab" className="absolute -bottom-4 left-0 right-0 h-0.5 bg-brand" />}
             </button>
           </div>
           
@@ -401,7 +419,7 @@ const Admin = () => {
                           {new Date(inquiry.created_at).toLocaleDateString()}
                         </td>
                         <td className="py-3.5 pr-4">
-                          <span className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider ${inquiry.type === 'franchise' ? 'bg-brand/20 text-brand' : 'bg-blue-500/20 text-blue-400'}`}>
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider ${inquiry.type === 'franchise' ? 'bg-brand/20 text-brand' : inquiry.type === 'ai_chat' ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>
                             {inquiry.type.replace('_', ' ')}
                           </span>
                         </td>
@@ -526,10 +544,23 @@ const Admin = () => {
               </div>
               
               <div className="pt-4 border-t border-white/10">
-                <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-2">Message</p>
-                <div className="bg-black/20 p-4 rounded-xl text-paper/80 whitespace-pre-wrap">
-                  {viewingInquiry.message}
-                </div>
+                <p className="text-[10px] font-mono uppercase tracking-widest text-paper/40 mb-2">Message Content</p>
+                {viewingInquiry.type === 'ai_chat' && viewingInquiry.chatHistory ? (
+                  <div className="bg-ink/50 border border-white/5 p-4 rounded-xl space-y-4 max-h-[300px] overflow-y-auto custom-scrollbar">
+                    {viewingInquiry.chatHistory.map((msg, idx) => (
+                      <div key={idx} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+                        <span className="text-[10px] font-mono uppercase text-paper/30 mb-1">{msg.role === 'user' ? viewingInquiry.name : 'AI Support'}</span>
+                        <div className={`p-3 rounded-xl max-w-[85%] text-sm font-light ${msg.role === 'user' ? 'bg-brand text-white rounded-br-sm' : 'bg-white/10 text-paper rounded-bl-sm'}`}>
+                          {msg.message}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-black/20 p-4 rounded-xl text-paper/80 whitespace-pre-wrap">
+                    {viewingInquiry.message}
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
