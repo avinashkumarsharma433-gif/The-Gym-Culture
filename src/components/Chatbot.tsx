@@ -62,8 +62,9 @@ const Chatbot = () => {
       });
       setLeadId(docRef.id);
       setIsVerified(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error starting chat session:", error);
+      alert(`❌ Error starting chat: ${error.message || 'Firebase connection failed'}. Check if Project ID and API Key are correct in firebase.ts`);
     } finally {
       setIsSubmitting(false);
     }
