@@ -15,6 +15,8 @@ import Admin from './pages/Admin';
 import ContactPage from './pages/ContactPage';
 import Login from './pages/Login';
 import Careers from './pages/Careers';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -91,6 +93,8 @@ function App() {
               <Route path="/careers" element={<PageWrapper><Careers /></PageWrapper>} />
               <Route path="/contact" element={<PageWrapper><ContactPage /></PageWrapper>} />
               <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+              <Route path="/privacy-policy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
+              <Route path="/terms-of-service" element={<PageWrapper><TermsOfService /></PageWrapper>} />
               <Route path="/admin" element={
                 <ProtectedRoute>
                   <PageWrapper><Admin /></PageWrapper>

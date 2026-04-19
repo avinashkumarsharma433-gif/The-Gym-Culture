@@ -259,7 +259,7 @@ const LocationDetail = () => {
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
             }}
-            className="services-swiper !pb-16"
+            className="services-swiper !px-10 !pt-8 !pb-24 -mx-10"
           >
             {location.services.map((service, i) => (
               <SwiperSlide key={i}>
@@ -323,7 +323,7 @@ const LocationDetail = () => {
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 4 },
             }}
-            className="amenities-swiper !pb-16"
+            className="amenities-swiper !px-10 !pt-8 !pb-24 -mx-10"
           >
             {location.amenities.map((amenity, i) => (
               <SwiperSlide key={i}>

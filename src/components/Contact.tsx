@@ -33,7 +33,7 @@ const customIcon = L.divIcon({
 const Contact = () => {
   const location = useLocation();
   const sectionRef = useRef<HTMLElement>(null);
-  const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '', location: '' });
+  const [formState, setFormState] = useState({ name: '', email: '', phone: '', subject: '', message: '', location: '' });
 
   // India bounds
   const indiaBounds = L.latLngBounds(
@@ -51,13 +51,13 @@ const Contact = () => {
       }, 100);
     }
   }, [location]);
-  const [errors, setErrors] = useState({ name: '', email: '', subject: '', message: '', location: '' });
+  const [errors, setErrors] = useState({ name: '', email: '', phone: '', subject: '', message: '', location: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
     let isValid = true;
-    const newErrors = { name: '', email: '', subject: '', message: '', location: '' };
+    const newErrors = { name: '', email: '', phone: '', subject: '', message: '', location: '' };
 
     if (!formState.name.trim()) {
       newErrors.name = 'Name is required';
@@ -73,6 +73,15 @@ const Contact = () => {
       isValid = false;
     } else if (!emailRegex.test(formState.email)) {
       newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    const phoneRegex = /^\+?[\d\s\-]+$/;
+    if (!formState.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+      isValid = false;
+    } else if (!phoneRegex.test(formState.phone) || formState.phone.replace(/[\s\-+]/g, '').length < 10) {
+      newErrors.phone = 'Please enter a valid phone number';
       isValid = false;
     }
 
@@ -112,8 +121,8 @@ const Contact = () => {
         
         setIsSubmitted(true);
         setTimeout(() => setIsSubmitted(false), 5000);
-        setFormState({ name: '', email: '', subject: '', message: '', location: '' });
-        setErrors({ name: '', email: '', subject: '', message: '', location: '' });
+        setFormState({ name: '', email: '', phone: '', subject: '', message: '', location: '' });
+        setErrors({ name: '', email: '', phone: '', subject: '', message: '', location: '' });
       } catch (error) {
         console.error("Error adding document: ", error);
         alert("There was an error submitting your form. Please try again.");
@@ -210,6 +219,20 @@ const Contact = () => {
                   className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.email ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 />
                 {errors.email && <p className="text-brand text-xs mt-1">{errors.email}</p>}
+              </div>
+              <div className="space-y-1">
+                <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Phone Number</label>
+                <input 
+                  type="tel" 
+                  value={formState.phone}
+                  onChange={(e) => {
+                    setFormState({...formState, phone: e.target.value});
+                    if (errors.phone) setErrors({...errors, phone: ''});
+                  }}
+                  placeholder="Your Number"
+                  className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.phone ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
+                />
+                {errors.phone && <p className="text-brand text-xs mt-1">{errors.phone}</p>}
               </div>
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold">Subject</label>
