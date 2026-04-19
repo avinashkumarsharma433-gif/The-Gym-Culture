@@ -109,7 +109,7 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-[calc(100%+2rem)] left-0 right-0 lg:hidden glass-dark rounded-[3rem] border-white/10 shadow-2xl overflow-hidden p-[1px]"
+              className="absolute top-full mt-4 left-0 right-0 lg:hidden glass-dark rounded-[3rem] border-white/10 shadow-2xl overflow-hidden p-[1px]"
             >
               <div className="max-h-[75vh] overflow-y-auto px-8 py-10 flex flex-col gap-6 rounded-[2.9rem]">
                 {navLinks.map((link) => (
