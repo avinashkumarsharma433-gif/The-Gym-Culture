@@ -152,7 +152,7 @@ const LocationDetail = () => {
       {/* Hero Section */}
       <section className="relative h-[70vh] flex items-end overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent z-10" />
+          <div className="absolute inset-0 smooth-gradient-t z-10" />
           <motion.img 
             initial={{ scale: 1.2, filter: 'blur(10px)' }}
             animate={{ scale: 1, filter: 'blur(0px)' }}
@@ -271,7 +271,7 @@ const LocationDetail = () => {
                       className="w-full h-full object-cover grayscale group-hover:scale-110 group-hover:grayscale-0 transition-all duration-700"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink to-transparent opacity-60" />
+                    <div className="absolute inset-0 smooth-gradient-t opacity-60" />
                     <div className="absolute bottom-6 left-8">
                       <div className="w-12 h-12 bg-brand rounded-xl flex items-center justify-center text-white mb-4">
                         <Zap className="w-6 h-6" />
@@ -379,7 +379,7 @@ const LocationDetail = () => {
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent opacity-80" />
+                    <div className="absolute inset-0 smooth-gradient-t opacity-80" />
                     <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                       <button className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-all shadow-xl">
                         <Instagram className="w-5 h-5" />

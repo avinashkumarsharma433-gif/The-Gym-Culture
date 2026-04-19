@@ -192,7 +192,7 @@ const Contact = () => {
                     setFormState({...formState, name: e.target.value});
                     if (errors.name) setErrors({...errors, name: ''});
                   }}
-                  placeholder="John Doe"
+                  placeholder="Your Name"
                   className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.name ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 />
                 {errors.name && <p className="text-brand text-xs mt-1">{errors.name}</p>}
@@ -206,7 +206,7 @@ const Contact = () => {
                     setFormState({...formState, email: e.target.value});
                     if (errors.email) setErrors({...errors, email: ''});
                   }}
-                  placeholder="john@example.com"
+                  placeholder="Your Email"
                   className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.email ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 />
                 {errors.email && <p className="text-brand text-xs mt-1">{errors.email}</p>}
@@ -220,7 +220,7 @@ const Contact = () => {
                     setFormState({...formState, subject: e.target.value});
                     if (errors.subject) setErrors({...errors, subject: ''});
                   }}
-                  placeholder="Membership Inquiry"
+                  placeholder="Your Subject"
                   className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.subject ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 />
                 {errors.subject && <p className="text-brand text-xs mt-1">{errors.subject}</p>}
@@ -234,7 +234,7 @@ const Contact = () => {
                     if (errors.location) setErrors({...errors, location: ''});
                   }}
                   options={locationsData.map(loc => ({ value: loc.name, label: loc.name }))}
-                  placeholder="Select a Location"
+                  placeholder="Select Your Location"
                   error={!!errors.location}
                 />
                 {errors.location && <p className="text-brand text-xs mt-1">{errors.location}</p>}
@@ -248,7 +248,7 @@ const Contact = () => {
                     setFormState({...formState, message: e.target.value});
                     if (errors.message) setErrors({...errors, message: ''});
                   }}
-                  placeholder="Tell us how we can help..."
+                  placeholder="Your Message"
                   className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all resize-none text-base leading-relaxed ${errors.message ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                 ></textarea>
                 {errors.message && <p className="text-brand text-xs mt-1">{errors.message}</p>}

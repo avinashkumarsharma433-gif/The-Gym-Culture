@@ -72,7 +72,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full glass-dark border-white/5 rounded-2xl pl-12 pr-6 py-3 focus:outline-none focus:border-brand transition-all text-base"
-                  placeholder="admin@thegymculture.in"
+                  placeholder="Your Email"
                 />
               </div>
             </div>
@@ -87,7 +87,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full glass-dark border-white/5 rounded-2xl pl-12 pr-6 py-3 focus:outline-none focus:border-brand transition-all text-base"
-                  placeholder="••••••••"
+                  placeholder="Your Password"
                 />
               </div>
             </div>

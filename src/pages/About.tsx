@@ -72,7 +72,7 @@ const About = () => {
             >
               <div className="absolute inset-x-0 top-0 h-48 opacity-20 z-0">
                 <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1000" alt="Mission" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink"></div>
+                <div className="absolute inset-0 smooth-gradient-b"></div>
               </div>
               <div className="relative z-10 pt-16">
                 <h2 className="font-display text-5xl uppercase mb-8 tracking-wide">Our Mission</h2>
@@ -90,7 +90,7 @@ const About = () => {
             >
               <div className="absolute inset-x-0 top-0 h-48 opacity-20 z-0">
                 <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000" alt="Vision" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink"></div>
+                <div className="absolute inset-0 smooth-gradient-b"></div>
               </div>
               <div className="relative z-10 pt-16">
                 <h2 className="font-display text-5xl uppercase mb-8 tracking-wide text-brand">Our Vision</h2>
@@ -182,7 +182,7 @@ const About = () => {
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 smooth-gradient-t opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
                     <p className="font-display text-xl uppercase">Expert Trainer</p>
                     <p className="font-mono text-[10px] uppercase tracking-widest opacity-60">Certified Professional</p>

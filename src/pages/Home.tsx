@@ -18,8 +18,7 @@ import {
   Plus,
   Minus,
   Play,
-  X,
-  Bot
+  X
 } from 'lucide-react';
 
 const Hero = () => {
@@ -31,7 +30,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-ink/60 to-ink z-10" />
+        <div className="absolute inset-0 smooth-gradient-b z-10" />
         <motion.img 
           initial={{ scale: 1.2, filter: 'blur(10px)' }}
           animate={{ scale: 1, filter: 'blur(0px)' }}
@@ -242,7 +241,7 @@ const Services = () => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-60"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
+              <div className="absolute inset-0 smooth-gradient-t" />
               
               <div className="absolute bottom-0 left-0 p-12 w-full">
                 <h3 className="font-display text-5xl uppercase mb-4 tracking-wide group-hover:-translate-y-2 transition-transform duration-500">{service.title}</h3>
@@ -535,7 +534,7 @@ const Testimonials = () => {
                     className="w-full h-full object-cover grayscale opacity-60"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent" />
+                  <div className="absolute inset-0 smooth-gradient-t opacity-90" />
                   <div className="absolute bottom-10 left-10">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-brand block mb-2">Achievement</span>
                     <span className="font-display text-4xl uppercase text-white">{reviews[currentIndex].result}</span>
@@ -739,7 +738,7 @@ const Amenities = () => {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
+              <div className="absolute inset-0 smooth-gradient-t" />
               
               <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
                 <div className="max-w-3xl">
@@ -929,7 +928,7 @@ const TrainersPreview = () => {
                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-duration-700"
                  referrerPolicy="no-referrer"
                />
-               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
+               <div className="absolute inset-0 smooth-gradient-t opacity-80" />
                <div className="absolute bottom-6 left-6">
                  <p className="font-display text-xl uppercase mb-1">Elite Coach</p>
                  <p className="font-mono text-[10px] uppercase tracking-widest text-brand">Certified</p>
@@ -957,72 +956,6 @@ const CTASection = () => {
   );
 };
 
-const AICoachAd = () => {
-  return (
-    <section className="py-24 border-t border-white/5 relative z-10 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="glass rounded-[3rem] p-8 md:p-16 flex flex-col lg:flex-row items-center gap-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand/10 blur-[100px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand/5 blur-[100px] -ml-32 -mb-32" />
-          
-          <div className="flex-1 text-center lg:text-left z-10">
-            <span className="font-mono text-brand text-xs tracking-[0.4em] uppercase mb-6 block font-bold">New Technology</span>
-            <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tighter mb-8 italic">Meet Your <br /><span className="text-brand">AI Gym Coach</span></h2>
-            <p className="text-paper/60 font-light text-xl leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0">
-              Not sure how to start? Our new Gemini-powered AI Coach is available 24/7 to answer your fitness, nutrition, and workout questions.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-               <div className="flex items-center gap-2 px-4 py-2 glass rounded-full text-sm border-brand/20">
-                 <Check className="w-4 h-4 text-brand" /> <span>24/7 Availability</span>
-               </div>
-               <div className="flex items-center gap-2 px-4 py-2 glass rounded-full text-sm border-brand/20">
-                 <Check className="w-4 h-4 text-brand" /> <span>Personalized Advice</span>
-               </div>
-               <div className="flex items-center gap-2 px-4 py-2 glass rounded-full text-sm border-brand/20">
-                 <Check className="w-4 h-4 text-brand" /> <span>Zero Waiting Time</span>
-               </div>
-            </div>
-          </div>
-          
-          <div className="flex-1 w-full max-w-sm lg:max-w-md">
-            <motion.div 
-              whileHover={{ rotateY: 5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="relative p-8 glass border-brand/30 rounded-3xl"
-            >
-               <div className="flex items-center gap-4 mb-6">
-                 <div className="w-12 h-12 bg-brand rounded-full flex items-center justify-center">
-                    <Bot className="w-7 h-7 text-white" />
-                 </div>
-                 <div>
-                    <div className="font-display text-lg uppercase">TGC AI Coach</div>
-                    <div className="text-[10px] text-brand uppercase tracking-widest font-mono font-bold">Online</div>
-                 </div>
-               </div>
-               <div className="space-y-4">
-                 <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none text-sm text-paper/80">
-                   "Hello! Ready to smash your goals today? How can I help you with your training?"
-                 </div>
-                 <div className="flex justify-end">
-                   <div className="bg-brand p-4 rounded-2xl rounded-tr-none text-sm text-white">
-                     "Hey! I need a quick 15-min HIIT routine."
-                   </div>
-                 </div>
-                 <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none text-sm text-paper/80">
-                   "Got it! Let's start with Jump Squats (45s), then Mountain Climbers..."
-                 </div>
-               </div>
-               <div className="mt-8 pt-6 border-t border-white/10 flex justify-center">
-                 <span className="text-paper/30 text-[10px] uppercase font-mono tracking-widest animate-pulse">Try the chat widget below ↙</span>
-               </div>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const Home = () => {
   return (
     <>
@@ -1030,7 +963,6 @@ const Home = () => {
       <WhoWeHelp />
       <Stats />
       <Services />
-      <AICoachAd />
       <Amenities />
       <Testimonials />
       <HowItWorks />

@@ -170,7 +170,7 @@ const Franchise = () => {
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent opacity-80" />
+              <div className="absolute inset-0 smooth-gradient-t opacity-80" />
               <div className="absolute bottom-10 left-10">
                 <p className="font-display text-4xl uppercase tracking-wide text-white mb-2">John Doe</p>
                 <p className="font-mono text-xs uppercase tracking-[0.3em] text-brand font-bold">Founder & CEO</p>
@@ -405,7 +405,7 @@ const Franchise = () => {
                         setFormState({...formState, name: e.target.value});
                         if (errors.name) setErrors({...errors, name: ''});
                       }}
-                      placeholder="John Doe"
+                      placeholder="Your Name"
                       className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.name ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
                     {errors.name && <p className="text-brand text-xs mt-1">{errors.name}</p>}
@@ -419,7 +419,7 @@ const Franchise = () => {
                         setFormState({...formState, email: e.target.value});
                         if (errors.email) setErrors({...errors, email: ''});
                       }}
-                      placeholder="john@example.com"
+                      placeholder="Your Email"
                       className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.email ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
                     {errors.email && <p className="text-brand text-xs mt-1">{errors.email}</p>}
@@ -435,7 +435,7 @@ const Franchise = () => {
                         setFormState({...formState, phone: e.target.value});
                         if (errors.phone) setErrors({...errors, phone: ''});
                       }}
-                      placeholder="+91 98765 43210"
+                      placeholder="Your Number"
                       className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.phone ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
                     {errors.phone && <p className="text-brand text-xs mt-1">{errors.phone}</p>}
@@ -449,7 +449,7 @@ const Franchise = () => {
                         setFormState({...formState, city: e.target.value});
                         if (errors.city) setErrors({...errors, city: ''});
                       }}
-                      placeholder="Mumbai"
+                      placeholder="Your Location"
                       className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all text-base ${errors.city ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                     />
                     {errors.city && <p className="text-brand text-xs mt-1">{errors.city}</p>}
@@ -468,7 +468,7 @@ const Franchise = () => {
                       { value: '50-100', label: '₹50L - ₹1Cr' },
                       { value: '100+', label: '₹1Cr+' }
                     ]}
-                    placeholder="Select Range"
+                    placeholder="Select Your Investment"
                     error={!!errors.investment}
                   />
                   {errors.investment && <p className="text-brand text-xs mt-1">{errors.investment}</p>}
@@ -482,7 +482,7 @@ const Franchise = () => {
                       setFormState({...formState, message: e.target.value});
                       if (errors.message) setErrors({...errors, message: ''});
                     }}
-                    placeholder="Tell us about your business experience..."
+                    placeholder="Your Message"
                     className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-2.5 focus:outline-none transition-all resize-none text-base leading-relaxed ${errors.message ? 'border-brand/50 focus:border-brand' : 'focus:border-white/20'}`}
                   ></textarea>
                   {errors.message && <p className="text-brand text-xs mt-1">{errors.message}</p>}

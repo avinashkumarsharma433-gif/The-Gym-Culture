@@ -1,12 +1,62 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Briefcase, ArrowRight, Star, Heart, Zap } from 'lucide-react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 import CustomSelect from '../components/CustomSelect';
 
 const Careers = () => {
   const [formState, setFormState] = useState({ 
     name: '', email: '', phone: '', city: '', experience: '', interest: '', link: '', message: '' 
   });
+  const [errors, setErrors] = useState<any>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors: any = {};
+
+    if (!formState.name.trim()) { newErrors.name = 'Required'; isValid = false; }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formState.email.trim()) { newErrors.email = 'Required'; isValid = false; }
+    else if (!emailRegex.test(formState.email)) { newErrors.email = 'Invalid'; isValid = false; }
+
+    const phoneRegex = /^\+?[\d\s-]{10,}$/;
+    if (!formState.phone.trim()) { newErrors.phone = 'Required'; isValid = false; }
+    else if (!phoneRegex.test(formState.phone)) { newErrors.phone = 'Invalid'; isValid = false; }
+
+    if (!formState.city.trim()) { newErrors.city = 'Required'; isValid = false; }
+    if (!formState.interest) { newErrors.interest = 'Required'; isValid = false; }
+    if (!formState.experience) { newErrors.experience = 'Required'; isValid = false; }
+    if (!formState.message.trim()) { newErrors.message = 'Required'; isValid = false; }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setIsSubmitting(true);
+      try {
+        await addDoc(collection(db, 'inquiries'), {
+          ...formState,
+          type: 'career',
+          created_at: new Date().toISOString()
+        });
+        setIsSubmitted(true);
+        setTimeout(() => setIsSubmitted(false), 5000);
+        setFormState({ name: '', email: '', phone: '', city: '', experience: '', interest: '', link: '', message: '' });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   const benefits = [
     { title: "Competitive Salary", desc: "Top-tier compensation packages with performance bonuses.", icon: Star },
     { title: "Health & Wellness", desc: "Free premium gym membership for you and a family member.", icon: Heart },
@@ -112,26 +162,26 @@ const Careers = () => {
             Send us your resume anyway. We are always on the lookout for great talent.
           </p>
           <div className="glass p-8 md:p-12 rounded-[3rem] text-left">
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold ml-4 mb-2 block">Full Name</label>
-                  <input type="text" value={formState.name} onChange={e => setFormState({...formState, name: e.target.value})} className="w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-brand transition-colors font-light" placeholder="John Doe" />
+                  <input type="text" value={formState.name} onChange={e => {setFormState({...formState, name: e.target.value}); if(errors.name) setErrors({...errors, name: ''})}} className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none transition-colors font-light ${errors.name ? 'border-brand/50 focus:border-brand' : 'focus:border-brand'}`} placeholder="Your Name" />
                 </div>
                 <div>
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold ml-4 mb-2 block">Email Address</label>
-                  <input type="email" value={formState.email} onChange={e => setFormState({...formState, email: e.target.value})} className="w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-brand transition-colors font-light" placeholder="john@example.com" />
+                  <input type="email" value={formState.email} onChange={e => {setFormState({...formState, email: e.target.value}); if(errors.email) setErrors({...errors, email: ''})}} className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none transition-colors font-light ${errors.email ? 'border-brand/50 focus:border-brand' : 'focus:border-brand'}`} placeholder="Your Email" />
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold ml-4 mb-2 block">Phone Number</label>
-                  <input type="tel" value={formState.phone} onChange={e => setFormState({...formState, phone: e.target.value})} className="w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-brand transition-colors font-light" placeholder="+91 98765 43210" />
+                  <input type="tel" value={formState.phone} onChange={e => {setFormState({...formState, phone: e.target.value}); if(errors.phone) setErrors({...errors, phone: ''})}} className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none transition-colors font-light ${errors.phone ? 'border-brand/50 focus:border-brand' : 'focus:border-brand'}`} placeholder="Your Number" />
                 </div>
                 <div>
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold ml-4 mb-2 block">Current City</label>
-                  <input type="text" value={formState.city} onChange={e => setFormState({...formState, city: e.target.value})} className="w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-brand transition-colors font-light" placeholder="Mumbai" />
+                  <input type="text" value={formState.city} onChange={e => {setFormState({...formState, city: e.target.value}); if(errors.city) setErrors({...errors, city: ''})}} className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none transition-colors font-light ${errors.city ? 'border-brand/50 focus:border-brand' : 'focus:border-brand'}`} placeholder="Your Location" />
                 </div>
               </div>
 
@@ -140,7 +190,7 @@ const Careers = () => {
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold ml-4 mb-2 block">Area of Interest</label>
                   <CustomSelect 
                     value={formState.interest}
-                    onChange={(value) => setFormState({...formState, interest: value})}
+                    onChange={(value) => {setFormState({...formState, interest: value}); if(errors.interest) setErrors({...errors, interest: ''})}}
                     options={[
                       { value: 'Personal Trainer', label: 'Personal Trainer' },
                       { value: 'Gym Manager', label: 'Gym Manager' },
@@ -149,13 +199,14 @@ const Careers = () => {
                       { value: 'Other', label: 'Other' }
                     ]}
                     placeholder="Select Role"
+                    error={!!errors.interest}
                   />
                 </div>
                 <div>
                   <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold ml-4 mb-2 block">Years of Experience</label>
                   <CustomSelect 
                     value={formState.experience}
-                    onChange={(value) => setFormState({...formState, experience: value})}
+                    onChange={(value) => {setFormState({...formState, experience: value}); if(errors.experience) setErrors({...errors, experience: ''})}}
                     options={[
                       { value: 'Fresher', label: 'Fresher (0 years)' },
                       { value: '1-3 Years', label: '1-3 Years' },
@@ -163,6 +214,7 @@ const Careers = () => {
                       { value: '5+ Years', label: '5+ Years' }
                     ]}
                     placeholder="Select Experience"
+                    error={!!errors.experience}
                   />
                 </div>
               </div>
@@ -174,11 +226,15 @@ const Careers = () => {
               
               <div>
                 <label className="font-mono text-[10px] uppercase tracking-[0.3em] text-paper/30 font-bold ml-4 mb-2 block">Why do you want to join us?</label>
-                <textarea rows={3} value={formState.message} onChange={e => setFormState({...formState, message: e.target.value})} className="w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-brand transition-colors font-light resize-none" placeholder="Tell us about yourself and why you're a good fit..."></textarea>
+                <textarea rows={3} value={formState.message} onChange={e => {setFormState({...formState, message: e.target.value}); if(errors.message) setErrors({...errors, message: ''})}} className={`w-full glass-dark border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none transition-colors font-light resize-none ${errors.message ? 'border-brand/50 focus:border-brand' : 'focus:border-brand'}`} placeholder="Your Message"></textarea>
               </div>
 
-              <button className="btn-glow w-full py-5 rounded-2xl font-display text-xl uppercase tracking-widest transition-all mt-4">
-                Submit Application
+              <button 
+                type="submit"
+                disabled={isSubmitting || isSubmitted}
+                className={`btn-glow w-full py-5 rounded-2xl font-display text-xl uppercase tracking-widest transition-all mt-4 ${isSubmitted ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
+              >
+                {isSubmitting ? 'Sending...' : isSubmitted ? 'Application Sent!' : 'Submit Application'}
               </button>
             </form>
           </div>
