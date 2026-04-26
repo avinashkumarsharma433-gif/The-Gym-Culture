@@ -27,12 +27,9 @@ const Hero = () => {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   const scale = useTransform(scrollY, [0, 500], [1, 1.1]);
 
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-
   return (
-    <>
-      <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
-        <div className="absolute inset-0 z-0">
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
+      <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 smooth-gradient-b z-10" />
         <motion.img 
           initial={{ scale: 1.2, filter: 'blur(10px)' }}
@@ -104,10 +101,7 @@ const Hero = () => {
             <button className="btn-glow px-10 py-5 md:px-12 md:py-6 rounded-full font-display text-xl md:text-2xl uppercase tracking-widest group">
               Start Free Trial <ArrowRight className="w-6 h-6" />
             </button>
-            <button 
-              onClick={() => setIsVideoModalOpen(true)}
-              className="glass hover:bg-white/10 px-10 py-5 md:px-12 md:py-6 rounded-full font-display text-xl md:text-2xl uppercase tracking-widest transition-all flex items-center gap-4 border border-white/10 hover:border-brand/50"
-            >
+            <button className="glass hover:bg-white/10 px-10 py-5 md:px-12 md:py-6 rounded-full font-display text-xl md:text-2xl uppercase tracking-widest transition-all flex items-center gap-4 border border-white/10 hover:border-brand/50">
               <Play className="w-5 h-5 text-brand" /> Watch Film
             </button>
           </motion.div>
@@ -141,44 +135,6 @@ const Hero = () => {
         </span>
       </div>
     </section>
-
-      <AnimatePresence>
-        {isVideoModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ink/90 backdrop-blur-xl"
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="relative w-full max-w-6xl aspect-video glass rounded-[2rem] overflow-hidden shadow-2xl border border-white/10"
-            >
-              <button
-                onClick={() => setIsVideoModalOpen(false)}
-                className="absolute top-4 right-4 z-10 p-3 bg-ink/50 hover:bg-brand text-white rounded-full transition-all backdrop-blur-md"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              
-              <video 
-                className="w-full h-full object-cover"
-                controls
-                controlsList="nodownload"
-                autoPlay
-                playsInline
-                src="https://thegymculture.in/wp-content/uploads/2026/04/TGC-Film.mp4" 
-              >
-                Your browser does not support the video tag.
-              </video>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
   );
 };
 
