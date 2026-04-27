@@ -25,7 +25,8 @@ import {
   Instagram,
   Twitter,
   Facebook,
-  X
+  X,
+  Play
 } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
@@ -207,8 +208,8 @@ const LocationDetail = () => {
               <p className="text-xl text-paper/60 font-light leading-relaxed mb-12">
                 {location.about}
               </p>
-              <div className="flex flex-wrap gap-4">
-                <button className="btn-glow px-12 py-6 font-display text-2xl uppercase tracking-widest inline-flex">
+              <div className="flex flex-col md:flex-row gap-4 items-center mt-12 w-full">
+                <button className="btn-glow h-12 md:h-14 flex-1 md:flex-none w-full md:w-auto !px-8 md:!px-12 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center group m-0">
                   Join This Branch
                 </button>
               </div>

@@ -143,6 +143,11 @@ const Hero = () => {
                   controls
                   autoPlay
                   playsInline
+                  ref={(el) => {
+                    if (el) {
+                      el.play().catch(e => console.log("Autoplay prevented:", e.message));
+                    }
+                  }}
                 >
                   Your browser does not support the video tag.
                 </video>

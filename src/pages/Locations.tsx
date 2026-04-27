@@ -119,16 +119,16 @@ const Locations = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col xl:flex-row gap-4">
+                  <div className="flex flex-col md:flex-row gap-4">
                     <button 
                       onClick={() => handleJoinClick(loc.name)}
-                      className="flex-1 btn-glow py-4 rounded-xl font-display text-sm uppercase tracking-widest"
+                      className="flex-1 btn-glow h-14 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center m-0"
                     >
                       Join Gym
                     </button>
                     <Link 
                       to={`/locations/${loc.id}`}
-                      className="w-14 glass rounded-xl flex items-center justify-center hover:bg-white/10 transition-all border-brand/20 hidden xl:flex"
+                      className="w-14 h-14 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all border-brand/20 hidden lg:flex shrink-0 m-0"
                     >
                       <ArrowRight className="w-5 h-5 rotate-[-45deg] text-brand" />
                     </Link>
