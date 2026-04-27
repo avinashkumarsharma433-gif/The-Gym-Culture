@@ -37,6 +37,18 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+const locationVideoLinks: Record<string, string> = {
+  "Haridwar": "https://drive.google.com/file/d/11K3c4WqwKgp5CsgPPGVTcbDOg2Hg5kLv/preview",
+  "Kandivali": "https://drive.google.com/file/d/1re0Un97QnONFx0IvF5Cvmgx5ThktYqtM/preview",
+  "Malad East": "https://drive.google.com/file/d/1Pawd2AbIjj_caz7psx18jrEGvTX94Bhp/preview",
+  "Mira Road": "https://drive.google.com/file/d/1K5Ym49Ob-Urvx9ZVTHjky-SlJRcqcWaY/preview",
+  "Orlem": "https://drive.google.com/file/d/1lezioaZmg8454E-OBPMlAexoBa3T9doF/preview",
+  "Sundar Nagar": "https://drive.google.com/file/d/1IRtN54NP7NGDNjmv0FiylvIxjO_VI6WH/preview",
+  "Borivali": "https://drive.google.com/file/d/1bcU_6EcgGyp1DFqjAKlQmO4IbaLcvSub/preview"
+};
+
+const defaultVideoLink = "https://drive.google.com/file/d/11rfzkg0acxp59fOaXqZpTzqqNGvkjzBr/preview";
+
 const LocationDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -167,32 +179,23 @@ const LocationDetail = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-h-[90vh] max-w-[calc(90vh*9/16)] aspect-[9/16] glass rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 z-10 mx-auto"
+              className="relative w-full max-h-[85vh] max-w-[calc(85vh*9/16)] aspect-[9/16] bg-black shadow-2xl z-10 mx-auto flex items-center justify-center overflow-hidden rounded-3xl border border-white/10"
             >
+              <div className="absolute inset-0 w-[calc(100%+10px)] h-[calc(100%+10px)] -left-[5px] -top-[5px]">
+                <iframe 
+                  src={activeVideo} 
+                  className="w-full h-full border-0 pointer-events-auto"
+                  allow="autoplay; fullscreen"
+                ></iframe>
+              </div>
+
+              {/* Close Button - positioned to cover Google Drive's pop-out icon */}
               <button 
                 onClick={() => setActiveVideo(null)}
-                className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-all z-50 group border border-white/20"
+                className="absolute top-0 right-0 w-16 h-16 bg-black flex items-center justify-center hover:bg-neutral-900 text-white transition-all z-[210] group rounded-bl-3xl"
               >
-                <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                <X className="w-8 h-8 group-hover:rotate-90 transition-transform duration-300" />
               </button>
-
-              <div className="w-full h-full bg-black flex items-center justify-center overflow-hidden">
-                <video 
-                  src={activeVideo} 
-                  className="w-full h-full object-cover"
-                  controls
-                  autoPlay
-                  playsInline
-                  onError={(e) => {
-                    const target = e.target as HTMLVideoElement;
-                    if (target.src.includes('tgc-universal-video.mp4')) return;
-                    target.src = '/tgc-universal-video.mp4';
-                    target.play().catch(err => console.log('Autoplay prevented on fallback:', err.message));
-                  }}
-                >
-                  Your browser does not support the video tag.
-                </video>
-              </div>
             </motion.div>
           </div>
         )}
@@ -260,7 +263,7 @@ const LocationDetail = () => {
                   Join This Branch
                 </button>
                 <button 
-                  onClick={() => setActiveVideo(`/${location.name.replace(/\s+/g, '-')}-Video.mp4`)}
+                  onClick={() => setActiveVideo(locationVideoLinks[location.name] || defaultVideoLink)}
                   className="glass h-12 md:h-14 w-full md:w-auto flex-1 md:flex-none px-8 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center gap-3 group hover:bg-white/10 transition-all border border-white/10 hover:border-brand/40 m-0"
                 >
                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-brand flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(233,1,2,0.4)] shrink-0">

@@ -18,7 +18,10 @@ import {
   Plus,
   Minus,
   X,
-  Play
+  Play,
+  Pause,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 const Hero = () => {
@@ -120,38 +123,29 @@ const Hero = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsVideoOpen(false)}
-              className="absolute inset-0 bg-ink/95 backdrop-blur-2xl px-4"
+              className="absolute inset-0 bg-ink/95 backdrop-blur-2xl"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-h-[90vh] max-w-[calc(90vh*9/16)] aspect-[9/16] glass rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 z-10 mx-auto"
+              className="relative w-full max-h-[85vh] max-w-[calc(85vh*9/16)] aspect-[9/16] bg-black shadow-2xl z-10 mx-auto flex items-center justify-center overflow-hidden rounded-3xl border border-white/10"
             >
+              <div className="absolute inset-0 w-[calc(100%+10px)] h-[calc(100%+10px)] -left-[5px] -top-[5px]">
+                <iframe 
+                  src="https://drive.google.com/file/d/11rfzkg0acxp59fOaXqZpTzqqNGvkjzBr/preview" 
+                  className="w-full h-full border-0 pointer-events-auto"
+                  allow="autoplay; fullscreen"
+                ></iframe>
+              </div>
+
+              {/* Close Button - positioned to cover Google Drive's pop-out icon */}
               <button 
                 onClick={() => setIsVideoOpen(false)}
-                className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-all z-50 group border border-white/20"
+                className="absolute top-0 right-0 w-16 h-16 bg-black flex items-center justify-center hover:bg-neutral-900 text-white transition-all z-[210] group rounded-bl-3xl"
               >
-                <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                <X className="w-8 h-8 group-hover:rotate-90 transition-transform duration-300" />
               </button>
-
-              <div className="w-full h-full bg-black flex items-center justify-center overflow-hidden">
-                <video 
-                  src="/tgc-universal-video.mp4" 
-                  poster="/Home Page Video _Thumbnail.webp"
-                  className="w-full h-full object-cover"
-                  controls
-                  autoPlay
-                  playsInline
-                  ref={(el) => {
-                    if (el) {
-                      el.play().catch(e => console.log("Autoplay prevented:", e.message));
-                    }
-                  }}
-                >
-                  Your browser does not support the video tag.
-                </video>
-              </div>
             </motion.div>
           </div>
         )}
