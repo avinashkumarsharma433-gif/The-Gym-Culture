@@ -138,11 +138,11 @@ const Hero = () => {
               <div className="w-full h-full bg-black flex items-center justify-center overflow-hidden">
                 <video 
                   src="/tgc-universal-video.mp4" 
+                  poster="/Home Page Video _Thumbnail.webp"
                   className="w-full h-full object-cover"
                   controls
                   autoPlay
                   playsInline
-                  muted
                 >
                   Your browser does not support the video tag.
                 </video>
