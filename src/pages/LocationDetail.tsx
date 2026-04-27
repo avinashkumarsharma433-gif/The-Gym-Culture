@@ -42,6 +42,7 @@ const LocationDetail = () => {
   const navigate = useNavigate();
   const location = locationsData.find(loc => loc.id === id);
   const [activeFaq, setActiveFaq] = React.useState<number | null>(null);
+  const [activeVideo, setActiveVideo] = React.useState<string | null>(null);
 
   if (!location) {
     return (
@@ -151,6 +152,52 @@ const LocationDetail = () => {
 
   return (
     <div className="pt-24 pb-16">
+      {/* Video Modal */}
+      <AnimatePresence>
+        {activeVideo && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveVideo(null)}
+              className="absolute inset-0 bg-ink/95 backdrop-blur-2xl px-4"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-h-[90vh] max-w-[calc(90vh*9/16)] aspect-[9/16] glass rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 z-10 mx-auto"
+            >
+              <button 
+                onClick={() => setActiveVideo(null)}
+                className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-all z-50 group border border-white/20"
+              >
+                <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+
+              <div className="w-full h-full bg-black flex items-center justify-center overflow-hidden">
+                <video 
+                  src={activeVideo} 
+                  className="w-full h-full object-cover"
+                  controls
+                  autoPlay
+                  playsInline
+                  onError={(e) => {
+                    const target = e.target as HTMLVideoElement;
+                    if (target.src.includes('tgc-universal-video.mp4')) return;
+                    target.src = '/tgc-universal-video.mp4';
+                    target.play().catch(err => console.log('Autoplay prevented on fallback:', err.message));
+                  }}
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Hero Section */}
       <section className="relative h-[70vh] flex items-end overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -211,6 +258,15 @@ const LocationDetail = () => {
               <div className="flex flex-col md:flex-row gap-4 items-center mt-12 w-full">
                 <button className="btn-glow h-12 md:h-14 flex-1 md:flex-none w-full md:w-auto !px-8 md:!px-12 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center group m-0">
                   Join This Branch
+                </button>
+                <button 
+                  onClick={() => setActiveVideo(`/${location.name.replace(/\s+/g, '-')}-Video.mp4`)}
+                  className="glass h-12 md:h-14 w-full md:w-auto flex-1 md:flex-none px-6 md:px-8 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center gap-3 group hover:bg-white/10 transition-all border border-white/20 m-0"
+                >
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-brand flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_15px_#FF0000] shrink-0">
+                    <Play className="w-3 h-3 md:w-4 md:h-4 fill-white text-white ml-0.5" />
+                  </div>
+                  Watch Video
                 </button>
               </div>
             </motion.div>
