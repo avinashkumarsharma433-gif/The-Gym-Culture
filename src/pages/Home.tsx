@@ -142,6 +142,7 @@ const Hero = () => {
                   controls
                   autoPlay
                   playsInline
+                  muted
                 >
                   Your browser does not support the video tag.
                 </video>
