@@ -137,7 +137,7 @@ const Hero = () => {
 
               <div className="w-full h-full bg-black flex items-center justify-center">
                 <video 
-                  src="/TGC%20Universal%20Video.mp4" 
+                  src="/tgc-universal-video.mp4" 
                   className="w-full h-full object-cover"
                   controls
                   autoPlay
