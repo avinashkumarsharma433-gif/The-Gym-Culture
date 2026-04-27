@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Phone, Clock, ArrowRight, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer as LeafletMapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+const MapContainer = LeafletMapContainer as any;
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
@@ -118,18 +119,18 @@ const Locations = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex flex-col xl:flex-row gap-4">
                     <button 
                       onClick={() => handleJoinClick(loc.name)}
-                      className="flex-grow btn-glow py-4 font-display text-xl uppercase tracking-widest"
+                      className="flex-1 btn-glow py-4 rounded-xl font-display text-sm uppercase tracking-widest"
                     >
-                      Join This Gym
+                      Join Gym
                     </button>
                     <Link 
                       to={`/locations/${loc.id}`}
-                      className="w-14 h-14 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all border-brand/20"
+                      className="w-14 glass rounded-xl flex items-center justify-center hover:bg-white/10 transition-all border-brand/20 hidden xl:flex"
                     >
-                      <ArrowRight className="w-6 h-6 rotate-[-45deg] text-brand" />
+                      <ArrowRight className="w-5 h-5 rotate-[-45deg] text-brand" />
                     </Link>
                   </div>
                 </div>
@@ -143,6 +144,7 @@ const Locations = () => {
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="glass h-[600px] rounded-[4rem] overflow-hidden relative border-brand/20 z-0">
+            {/* @ts-ignore: gestureHandling is added by leafet-gesture-handling plugin */}  
             <MapContainer 
               center={[20.5937, 78.9629]} // Center of India
               zoom={5} 

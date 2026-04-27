@@ -14,7 +14,8 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import CustomSelect from './CustomSelect';
 
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { MapContainer as LeafletMapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+const MapContainer = LeafletMapContainer as any;
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -32,7 +33,7 @@ const customIcon = L.divIcon({
 
 const Contact = () => {
   const location = useLocation();
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [formState, setFormState] = useState({ name: '', email: '', phone: '', subject: '', message: '', location: '' });
 
   // India bounds
@@ -298,6 +299,7 @@ const Contact = () => {
           viewport={{ once: true }}
           className="mt-20 glass h-[500px] rounded-[3rem] overflow-hidden relative border-brand/20 z-0 w-full"
         >
+          {/* @ts-ignore: gestureHandling is added by leafet-gesture-handling plugin */}  
           <MapContainer 
             center={[20.5937, 78.9629]} 
             zoom={5} 

@@ -17,29 +17,26 @@ import {
   Dna,
   Plus,
   Minus,
-  Play,
-  X
+  X,
+  Play
 } from 'lucide-react';
 
 const Hero = () => {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   const scale = useTransform(scrollY, [0, 500], [1, 1.1]);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
-      <div className="absolute inset-0 z-0">
+    <>
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
+        <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 smooth-gradient-b z-10" />
-        <motion.img 
-          initial={{ scale: 1.2, filter: 'blur(10px)' }}
-          animate={{ scale: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
-          style={{ scale }}
-          src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2070&auto=format&fit=crop" 
-          alt="Gym Background" 
-          className="w-full h-full object-cover grayscale opacity-40"
-          referrerPolicy="no-referrer"
+        <img 
+          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
+          className="w-full h-full object-cover grayscale opacity-60"
+          alt="Gym Background"
         />
       </div>
 
@@ -96,17 +93,63 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.4, duration: 0.8 }}
-            className="flex flex-wrap gap-6 items-center"
+            className="flex flex-wrap gap-4 md:gap-6 items-center"
           >
-            <button className="btn-glow px-10 py-5 md:px-12 md:py-6 rounded-full font-display text-xl md:text-2xl uppercase tracking-widest group">
-              Start Free Trial <ArrowRight className="w-6 h-6" />
+            <button className="btn-glow h-12 md:h-14 !px-6 md:!px-8 rounded-full font-display text-sm md:text-base uppercase tracking-widest group flex items-center justify-center m-0">
+              Start Free Trial <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2 md:ml-3" />
             </button>
-            <button className="glass hover:bg-white/10 px-10 py-5 md:px-12 md:py-6 rounded-full font-display text-xl md:text-2xl uppercase tracking-widest transition-all flex items-center gap-4 border border-white/10 hover:border-brand/50">
-              <Play className="w-5 h-5 text-brand" /> Watch Film
+            <button 
+              onClick={() => setIsVideoOpen(true)}
+              className="glass h-12 md:h-14 px-6 md:px-8 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center gap-3 group hover:bg-white/10 transition-all border border-white/20 m-0"
+            >
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-brand flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_15px_#FF0000] shrink-0">
+                <Play className="w-3 h-3 md:w-4 md:h-4 fill-white text-white ml-0.5" />
+              </div>
+              Watch film
             </button>
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {isVideoOpen && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsVideoOpen(false)}
+              className="absolute inset-0 bg-ink/95 backdrop-blur-2xl px-4"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-h-[90vh] max-w-[calc(90vh*9/16)] aspect-[9/16] glass rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 z-10 mx-auto"
+            >
+              <button 
+                onClick={() => setIsVideoOpen(false)}
+                className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand hover:text-white transition-all z-50 group border border-white/20"
+              >
+                <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+
+              <div className="w-full h-full bg-black flex items-center justify-center">
+                <video 
+                  src="/TGC%20Universal%20Video.mp4" 
+                  className="w-full h-full object-cover"
+                  controls
+                  autoPlay
+                  playsInline
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Floating Badge */}
       <motion.div 
@@ -135,6 +178,7 @@ const Hero = () => {
         </span>
       </div>
     </section>
+    </>
   );
 };
 

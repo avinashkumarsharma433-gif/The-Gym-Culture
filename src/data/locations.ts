@@ -35,7 +35,7 @@ export const locationsData: LocationData[] = [
       "Air Conditioned",
       "Music System",
       "Supplement Store"
-    ]
+    ],
   },
   {
     id: "kandivali",
@@ -57,7 +57,7 @@ export const locationsData: LocationData[] = [
       "Certified Trainers",
       "Steam Room",
       "Shower room"
-    ]
+    ],
   },
   {
     id: "mira-road",
@@ -82,7 +82,7 @@ export const locationsData: LocationData[] = [
       "Shower Facilities",
       "Juice Bar",
       "Bike Parking"
-    ]
+    ],
   },
   {
     id: "malad-east",
@@ -107,7 +107,7 @@ export const locationsData: LocationData[] = [
       "Lounge Area",
       "Parking Space",
       "Digital Lockers"
-    ]
+    ],
   },
   {
     id: "orlem",
@@ -129,7 +129,7 @@ export const locationsData: LocationData[] = [
       "Steam Room",
       "Shower room",
       "Ice Shower"
-    ]
+    ],
   },
   {
     id: "haridwar",
@@ -154,7 +154,7 @@ export const locationsData: LocationData[] = [
       "Filtered Water",
       "Personal Lockers",
       "CCTV Security"
-    ]
+    ],
   },
   {
     id: "sundar-nagar",
@@ -179,6 +179,6 @@ export const locationsData: LocationData[] = [
       "Protein Bar",
       "Free Wi-Fi",
       "Parking"
-    ]
-  }
+    ],
+  },
 ];

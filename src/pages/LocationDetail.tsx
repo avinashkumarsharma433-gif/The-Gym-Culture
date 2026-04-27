@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   MapPin, 
   Phone, 
@@ -24,7 +24,8 @@ import {
   HelpCircle,
   Instagram,
   Twitter,
-  Facebook
+  Facebook,
+  X
 } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
@@ -206,9 +207,11 @@ const LocationDetail = () => {
               <p className="text-xl text-paper/60 font-light leading-relaxed mb-12">
                 {location.about}
               </p>
-              <button className="btn-glow px-12 py-6 font-display text-2xl uppercase tracking-widest inline-flex">
-                Join This Branch
-              </button>
+              <div className="flex flex-wrap gap-4">
+                <button className="btn-glow px-12 py-6 font-display text-2xl uppercase tracking-widest inline-flex">
+                  Join This Branch
+                </button>
+              </div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}

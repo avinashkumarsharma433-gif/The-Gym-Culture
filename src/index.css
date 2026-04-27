@@ -7,7 +7,7 @@
   --font-display: "Bebas Neue", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-brand: #E90102; /* Exact Match Red */
+  --color-brand: #E90102;
   --color-ink: #0B0B0F;
   --color-ink-mid: #12121A;
   --color-ink-light: #1A1A24;
@@ -17,13 +17,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: var(--color-ink-mid);
+    background-color: #12121A;
     overflow-x: hidden;
     color-scheme: dark;
   }
   body {
-    background-color: var(--color-ink);
-    color: var(--color-paper);
+    background-color: #0B0B0F;
+    color: #FFFFFF;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
