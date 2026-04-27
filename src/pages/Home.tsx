@@ -135,7 +135,7 @@ const Hero = () => {
                 <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
               </button>
 
-              <div className="w-full h-full bg-black flex items-center justify-center">
+              <div className="w-full h-full bg-black flex items-center justify-center overflow-hidden">
                 <video 
                   src="/tgc-universal-video.mp4" 
                   className="w-full h-full object-cover"
