@@ -52,7 +52,7 @@ const Hero = () => {
               initial={{ width: 0 }}
               animate={{ width: 64 }}
               transition={{ delay: 0.8, duration: 1, ease: "circOut" }}
-              className="h-[2px] bg-brand shadow-[0_0_15px_#FF0000]" 
+              className="h-[2px] bg-brand shadow-[0_0_15px_rgba(233,1,2,0.6)]" 
             />
             <motion.span 
               initial={{ opacity: 0, x: -20 }}
@@ -100,9 +100,9 @@ const Hero = () => {
             </button>
             <button 
               onClick={() => setIsVideoOpen(true)}
-              className="glass h-12 md:h-14 px-6 md:px-8 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center gap-3 group hover:bg-white/10 transition-all border border-white/20 m-0"
+              className="glass h-12 md:h-14 px-8 rounded-full font-display text-sm md:text-base uppercase tracking-widest flex items-center justify-center gap-3 group hover:bg-white/10 transition-all border border-white/10 hover:border-brand/40 m-0"
             >
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-brand flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_15px_#FF0000] shrink-0">
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-brand flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(233,1,2,0.4)] shrink-0">
                 <Play className="w-3 h-3 md:w-4 md:h-4 fill-white text-white ml-0.5" />
               </div>
               Watch film
